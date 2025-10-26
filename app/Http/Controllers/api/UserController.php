@@ -19,4 +19,11 @@ class UserController extends Controller
         $user = User::create($request->all());
         return response()->json($user, 201);
     }
+
+    public function updateUser(Request $request, $id)
+    {
+        $user = User::findOrFail($id);
+        $user->update($request->all());
+        return response()->json($user);
+    }
 }

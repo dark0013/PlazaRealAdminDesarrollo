@@ -12,13 +12,13 @@ Route::get('/user', [UserController::class, 'getUsers']);
 
 Route::post('/user', [UserController::class, 'createUser']);
 
-/*
+Route::put('/user/{id}', [UserController::class, 'updateUser']);
+
+
 
 /* 
 
-Route::put('/user', function () {
-    return "????";
-});
+
 
 Route::delete('/user', function () {
     return "????";
