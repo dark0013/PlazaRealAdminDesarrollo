@@ -14,13 +14,5 @@ Route::post('/user', [UserController::class, 'createUser']);
 
 Route::put('/user/{id}', [UserController::class, 'updateUser']);
 
+Route::patch('/users/{id}/deactivate', [UserController::class, 'deactivateUser']);
 
-
-/* 
-
-
-
-Route::delete('/user', function () {
-    return "????";
-});
- */
