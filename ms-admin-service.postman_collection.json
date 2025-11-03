@@ -7,101 +7,310 @@
 	},
 	"item": [
 		{
-			"name": "getUsers",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{url-apache}}/api/user",
-					"host": [
-						"{{url-apache}}"
-					],
-					"path": [
-						"api",
-						"user"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "createUser",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"first_name\": \"Alain\",\r\n    \"last_name\": \"Campoverde\",\r\n    \"identification_number\": \"0102030405\",\r\n    \"email\": \"alain@example.com\",\r\n    \"password\": \"Password123!\",\r\n    \"telephone\": \"0991234567\",\r\n    \"role\": \"admin\",\r\n    \"status\": \"active\"\r\n}\r\n",
-					"options": {
-						"raw": {
-							"language": "json"
+			"name": "user",
+			"item": [
+				{
+					"name": "getUsers",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url-laravel}}/api/user",
+							"host": [
+								"{{url-laravel}}"
+							],
+							"path": [
+								"api",
+								"user"
+							]
 						}
-					}
+					},
+					"response": []
 				},
-				"url": {
-					"raw": "{{url-apache}}/api/user",
-					"host": [
-						"{{url-apache}}"
-					],
-					"path": [
-						"api",
-						"user"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "updateUser",
-			"request": {
-				"method": "PUT",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "  {\r\n    \"id\": 1,\r\n    \"first_name\": \"andre\",\r\n    \"last_name\": \"Campoverde\",\r\n    \"identification_number\": \"0102030405\",\r\n    \"email\": \"alain@example.com\",\r\n    \"telephone\": \"0991234567\",\r\n    \"password\": \"Password1235!\",\r\n    \"role\": \"admin\",\r\n    \"status\": \"active\"\r\n  }\r\n",
-					"options": {
-						"raw": {
-							"language": "json"
+				{
+					"name": "createUser",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"first_name\": \"Maggie\",\r\n    \"last_name\": \"Campoverde\",\r\n    \"identification_number\": \"0931779292\",\r\n    \"email\": \"alain0013@example.com\",\r\n    \"password\": \"Password123!\",\r\n    \"telephone\": \"0991234567\",\r\n    \"role\": \"admin\",\r\n    \"status\": \"active\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url-laravel}}/api/user",
+							"host": [
+								"{{url-laravel}}"
+							],
+							"path": [
+								"api",
+								"user"
+							]
 						}
-					}
-				},
-				"url": {
-					"raw": "{{url-apache}}/api/user/1",
-					"host": [
-						"{{url-apache}}"
-					],
-					"path": [
-						"api",
-						"user",
-						"1"
+					},
+					"response": [
+						{
+							"name": "createUser",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"first_name\": \"Maggie\",\r\n    \"last_name\": \"Campoverde\",\r\n    \"identification_number\": \"0931779292\",\r\n    \"email\": \"alain0013@example.com\",\r\n    \"password\": \"Password123!\",\r\n    \"telephone\": \"0991234567\",\r\n    \"role\": \"admin\",\r\n    \"status\": \"active\"\r\n}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url-laravel}}/api/user",
+									"host": [
+										"{{url-laravel}}"
+									],
+									"path": [
+										"api",
+										"user"
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						}
 					]
+				},
+				{
+					"name": "updateUser",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "  {\r\n    \"id\": 1,\r\n    \"first_name\": \"andre\",\r\n    \"last_name\": \"Campoverde\",\r\n    \"identification_number\": \"0102030405\",\r\n    \"email\": \"alain@example.com\",\r\n    \"telephone\": \"0991234567\",\r\n    \"password\": \"Password1235!\",\r\n    \"role\": \"admin\",\r\n    \"status\": \"active\"\r\n  }\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url-laravel}}/api/user/1",
+							"host": [
+								"{{url-laravel}}"
+							],
+							"path": [
+								"api",
+								"user",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deactivateUser",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "  {\r\n    \"id\": 1,\r\n    \"first_name\": \"andre\",\r\n    \"last_name\": \"Campoverde\",\r\n    \"identification_number\": \"0102030405\",\r\n    \"email\": \"alain@example.com\",\r\n    \"telephone\": \"0991234567\",\r\n    \"password\": \"Password1235!\",\r\n    \"role\": \"admin\",\r\n    \"status\": \"active\"\r\n  }\r\n"
+						},
+						"url": {
+							"raw": "{{url-laravel}}/api/users/1/deactivate",
+							"host": [
+								"{{url-laravel}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"1",
+								"deactivate"
+							]
+						}
+					},
+					"response": []
 				}
-			},
-			"response": []
+			]
 		},
 		{
-			"name": "deactivateUser",
-			"request": {
-				"method": "PATCH",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "  {\r\n    \"id\": 1,\r\n    \"first_name\": \"andre\",\r\n    \"last_name\": \"Campoverde\",\r\n    \"identification_number\": \"0102030405\",\r\n    \"email\": \"alain@example.com\",\r\n    \"telephone\": \"0991234567\",\r\n    \"password\": \"Password1235!\",\r\n    \"role\": \"admin\",\r\n    \"status\": \"active\"\r\n  }\r\n"
+			"name": "role",
+			"item": [
+				{
+					"name": "getRole",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url-laravel}}/api/role",
+							"host": [
+								"{{url-laravel}}"
+							],
+							"path": [
+								"api",
+								"role"
+							]
+						}
+					},
+					"response": []
 				},
-				"url": {
-					"raw": "{{url-apache}}/api/users/1/deactivate",
-					"host": [
-						"{{url-apache}}"
-					],
-					"path": [
-						"api",
-						"users",
-						"1",
-						"deactivate"
-					]
+				{
+					"name": "createRole",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\":\"nose\",\r\n    \"description\":\"es que la plena que no se\",\r\n    \"permissions\":\"negado\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url-laravel}}/api/role",
+							"host": [
+								"{{url-laravel}}"
+							],
+							"path": [
+								"api",
+								"role"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "updateRole",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\":\"nose\",\r\n    \"description\":\"es que la plena que no se\",\r\n    \"permissions\":\"activado\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url-laravel}}/api/role/1",
+							"host": [
+								"{{url-laravel}}"
+							],
+							"path": [
+								"api",
+								"role",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "New Request",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\":\"nose\",\r\n    \"description\":\"es que la plena que no se\",\r\n    \"permissions\":\"activado\"\r\n}"
+						},
+						"url": {
+							"raw": "{{url-laravel}}/api/role/1/desactivate",
+							"host": [
+								"{{url-laravel}}"
+							],
+							"path": [
+								"api",
+								"role",
+								"1",
+								"desactivate"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "New Request",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "{{url-laravel}}/api/role/1/activate",
+							"host": [
+								"{{url-laravel}}"
+							],
+							"path": [
+								"api",
+								"role",
+								"1",
+								"activate"
+							]
+						}
+					},
+					"response": []
 				}
-			},
-			"response": []
+			]
+		},
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "login",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n     \"email\": \"alain0013@example.com\",\r\n    \"password\": \"Password123!\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url-laravel}}/api/login",
+							"host": [
+								"{{url-laravel}}"
+							],
+							"path": [
+								"api",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "logout",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				}
+			]
 		}
 	],
 	"event": [
