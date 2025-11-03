@@ -53,6 +53,12 @@ class UserController extends Controller
 
         return ResponseHelper::success($user, 200);
     }
+    public function activateUser($id)
+    {
+        $user = $this->userService->updateStatus($id, 'active');
+
+        return ResponseHelper::success($user, 200);
+    }
 
 
 }
