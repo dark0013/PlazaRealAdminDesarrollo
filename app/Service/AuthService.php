@@ -11,7 +11,7 @@ class AuthService
 {
     public function login(array $credentials)
     {
-        // Validation
+       
         $validator = Validator::make($credentials, [
             'email' => 'required|email',
             'password' => 'required',
@@ -21,7 +21,7 @@ class AuthService
             throw new ValidationException($validator);
         }
 
-        // Check if user exists
+        
         $user = User::where('email', $credentials['email'])->first();
 
         if (!$user || !Hash::check($credentials['password'], $user->password)) {
@@ -30,7 +30,7 @@ class AuthService
             ]);
         }
 
-        // Create token
+        
         $token = $user->createToken('auth_token')->plainTextToken;
 
         return [

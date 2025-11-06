@@ -11,6 +11,15 @@ class RoleService
         return $roles->isEmpty() ? null : $roles;
     }
 
+    public function getRoleById(int $id)
+    {
+        $role = Role::find($id);
+        if (!$role) {
+            return ['errors' => 'Role not found'];
+        }
+        return $role ?: ['errors' => 'Role not found'];
+    }
+
     public function createRole(array $data)
     {
         $validator = Validator::make($data, [
