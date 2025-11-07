@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('password');
             $table->string('telephone');
+            $table->string('avatar');
             $table->string('role');
             $table->string('status')->default('active');
 
