@@ -24,8 +24,8 @@ class RoleService
     {
         $validator = Validator::make($data, [
             'name' => 'required|string|unique:rol,name',
-            'description' => 'required|string',
-            'permissions' => 'required|string',
+            'description' => 'required|string'/* ,
+            'permissions' => 'required|string', */
         ]);
 
         if ($validator->fails()) {
