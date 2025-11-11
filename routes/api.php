@@ -14,7 +14,7 @@ Route::prefix('user')->group(function () {
     Route::patch('/{id}/activate', [UserController::class, 'activateUser']);
 });
 
-Route::middleware('auth:sanctum')->prefix('role')->group(function () {
+Route::prefix('roles')->group(function () {
     Route::get('/', [RoleController::class, 'getRoles']);
     Route::post('/', [RoleController::class, 'createRole']);
     Route::put('/{id}', [RoleController::class, 'updateRole']);
