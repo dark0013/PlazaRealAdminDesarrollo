@@ -49,13 +49,13 @@ class UserController extends Controller
 
     public function deactivateUser($id)
     {
-        $user = $this->userService->updateStatus($id, 'inactive');
+        $user = $this->userService->updateStatus($id, false);
 
         return ResponseHelper::success($user, 200);
     }
     public function activateUser($id)
     {
-        $user = $this->userService->updateStatus($id, 'active');
+        $user = $this->userService->updateStatus($id, true);
 
         return ResponseHelper::success($user, 200);
     }

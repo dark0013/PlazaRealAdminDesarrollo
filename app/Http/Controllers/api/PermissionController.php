@@ -61,7 +61,7 @@ class PermissionController extends Controller
 
     public function deactivatePermission($id)
     {
-        $result = $this->permissionService->changeStatusPermission($id, 'inactive');
+        $result = $this->permissionService->changeStatusPermission($id, false);
         if (isset($result['errors'])) {
             return ResponseHelper::error($result['errors'], 400);
         }
@@ -71,7 +71,7 @@ class PermissionController extends Controller
 
     public function activatePermission($id)
     {
-        $result = $this->permissionService->changeStatusPermission($id, 'active');
+        $result = $this->permissionService->changeStatusPermission($id, true);
         if (isset($result['errors'])) {
             return ResponseHelper::error($result['errors'], 400);
         }

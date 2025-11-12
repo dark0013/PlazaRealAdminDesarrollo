@@ -216,7 +216,7 @@
 					"response": []
 				},
 				{
-					"name": "New Request",
+					"name": "desactivateRole",
 					"request": {
 						"method": "PATCH",
 						"header": [],
@@ -240,7 +240,7 @@
 					"response": []
 				},
 				{
-					"name": "New Request",
+					"name": "activateRole",
 					"request": {
 						"method": "PATCH",
 						"header": [],
@@ -311,8 +311,152 @@
 					"response": []
 				}
 			]
+		},
+		{
+			"name": "Permission",
+			"item": [
+				{
+					"name": "getPermissions",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "createPermission",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "7|KDweSD44kXfPSbuCujAi2jMXLjr0smAjMtJwYQ1pb83150e3",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\":\"usuariosx\",\r\n    \"description\":\"usuarios\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url-laravel}}/api/permission",
+							"host": [
+								"{{url-laravel}}"
+							],
+							"path": [
+								"api",
+								"permission"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "updatePermission",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "7|KDweSD44kXfPSbuCujAi2jMXLjr0smAjMtJwYQ1pb83150e3",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\":\"xxxxxx\",\r\n    \"description\":\"usuarios\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url-laravel}}/api/permission/1",
+							"host": [
+								"{{url-laravel}}"
+							],
+							"path": [
+								"api",
+								"permission",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "desactivatePermission",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url-laravel}}/api/permission/1/desactivate",
+							"host": [
+								"{{url-laravel}}"
+							],
+							"path": [
+								"api",
+								"permission",
+								"1",
+								"desactivate"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "activatePermission",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				}
+			]
 		}
 	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "7|KDweSD44kXfPSbuCujAi2jMXLjr0smAjMtJwYQ1pb83150e3",
+				"type": "string"
+			}
+		]
+	},
 	"event": [
 		{
 			"listen": "prerequest",
