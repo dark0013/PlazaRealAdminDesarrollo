@@ -31,5 +31,14 @@ Route::middleware('auth:sanctum')->prefix('permission')->group(function () {
     Route::patch('/{id}/activate', [PermissionController::class, 'activatePermission']);
 });
 
+Route::prefix('catalogs')->group(function () {
+    Route::get('/', [\App\Http\Controllers\Api\CatalogController::class, 'getCatalogs']);
+    Route::get('/{id}', [\App\Http\Controllers\Api\CatalogController::class, 'getCatalog']);
+    Route::post('/', [\App\Http\Controllers\Api\CatalogController::class, 'createCatalog']);
+    Route::put('/{id}', [\App\Http\Controllers\Api\CatalogController::class, 'updateCatalog']);
+   /*  Route::patch('/{id}/desactivate', [\App\Http\Controllers\Api\CatalogController::class, 'desactivateCatalog']);
+    Route::patch('/{id}/activate', [\App\Http\Controllers\Api\CatalogController::class, 'activateCatalog']); */
+});
+
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
