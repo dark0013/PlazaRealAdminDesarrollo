@@ -40,5 +40,15 @@ Route::prefix('catalogs')->group(function () {
     Route::patch('/{id}/activate', [\App\Http\Controllers\Api\CatalogController::class, 'activateCatalog']); */
 });
 
+//administración de deportistas
+Route::prefix('sportsman')->group(function () {
+    Route::get('/', [\App\Http\Controllers\Api\SportsmanController::class, 'getAllSportsman']);
+    Route::get('/{id}', [\App\Http\Controllers\Api\SportsmanController::class, 'getSportsmanById']);
+    Route::post('/', [\App\Http\Controllers\Api\SportsmanController::class, 'createSportsman']);
+    Route::put('/{id}', [\App\Http\Controllers\Api\SportsmanController::class, 'updateSportsman']);
+    Route::patch('/{id}/desactivate', [\App\Http\Controllers\Api\SportsmanController::class, 'deactivateSportsman']);
+    Route::patch('/{id}/activate', [\App\Http\Controllers\Api\SportsmanController::class, 'activateSportsman']);
+});
+
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
