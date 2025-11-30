@@ -21,9 +21,8 @@ return new class extends Migration
             $table->string('password');
             $table->string('telephone');
             $table->string('avatar');
-            $table->string('role');
-            $table->string('status')->default('active');
-
+            $table->string('role');            
+            $table->boolean('status')->default(true);
             $table->rememberToken();
             $table->timestamps();
         });

@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('name')->unique();
             $table->string('description');
             $table->string('permissions')->default('negado');            
-            $table->string('status')->default('active');
+            $table->boolean('status')->default(true);
             $table->timestamps();
 
         });

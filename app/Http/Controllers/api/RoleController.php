@@ -51,7 +51,7 @@ class RoleController extends Controller
 
     public function deactivateRole($id)
     {
-        $result = $this->roleService->changeStatusRole($id, 'inactive');
+        $result = $this->roleService->changeStatusRole($id, false);
         if (isset($result['errors'])) {
             return ResponseHelper::error($result['errors'], 400);
         }
@@ -61,7 +61,7 @@ class RoleController extends Controller
 
     public function activateRole($id)
     {
-        $result = $this->roleService->changeStatusRole($id, 'active');
+        $result = $this->roleService->changeStatusRole($id, true);
         if (isset($result['errors'])) {
             return ResponseHelper::error($result['errors'], 400);
         }

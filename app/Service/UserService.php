@@ -21,8 +21,7 @@ class UserService
             'email' => 'required|string|email|max:255|unique:users,email',
             'password' => 'required|string|min:8',
             'telephone' => 'nullable|string|max:20',
-            'role' => 'required|string|max:50',
-            'status' => 'required|string|max:50',
+            'role' => 'required|string|max:50'
         ]);
 
         if ($validator->fails()) {
@@ -45,8 +44,8 @@ class UserService
             'email' => 'sometimes|required|string|email|max:255|unique:users,email,' . $id,
             'password' => 'sometimes|required|string|min:8', // Laravel lo hasheará automáticamente
             'telephone' => 'nullable|string|max:20',
-            'role' => 'sometimes|required|string|max:50',
-            'status' => 'sometimes|required|string|max:50',
+            'role' => 'sometimes|required|string|max:50'
+            
         ]);
 
         if ($validator->fails()) {
