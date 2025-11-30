@@ -217,6 +217,7 @@
 				},
 				{
 					"name": "desactivateRole",
+					"name": "desactivateRole",
 					"request": {
 						"method": "PATCH",
 						"header": [],
@@ -240,6 +241,7 @@
 					"response": []
 				},
 				{
+					"name": "activateRole",
 					"name": "activateRole",
 					"request": {
 						"method": "PATCH",
@@ -443,6 +445,370 @@
 						"header": []
 					},
 					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "7|KDweSD44kXfPSbuCujAi2jMXLjr0smAjMtJwYQ1pb83150e3",
+				"type": "string"
+			}
+		]
+	},
+		},
+		{
+			"name": "Permission",
+			"item": [
+				{
+					"name": "getPermissions",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "createPermission",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "7|KDweSD44kXfPSbuCujAi2jMXLjr0smAjMtJwYQ1pb83150e3",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\":\"usuariosx\",\r\n    \"description\":\"usuarios\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url-laravel}}/api/permission",
+							"host": [
+								"{{url-laravel}}"
+							],
+							"path": [
+								"api",
+								"permission"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "updatePermission",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "7|KDweSD44kXfPSbuCujAi2jMXLjr0smAjMtJwYQ1pb83150e3",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\":\"xxxxxx\",\r\n    \"description\":\"usuarios\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url-laravel}}/api/permission/1",
+							"host": [
+								"{{url-laravel}}"
+							],
+							"path": [
+								"api",
+								"permission",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "desactivatePermission",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url-laravel}}/api/permission/1/desactivate",
+							"host": [
+								"{{url-laravel}}"
+							],
+							"path": [
+								"api",
+								"permission",
+								"1",
+								"desactivate"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "activatePermission",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "catalogs",
+			"item": [
+				{
+					"name": "getAllCatalogs",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url-laravel}}/api/catalogs",
+							"host": [
+								"{{url-laravel}}"
+							],
+							"path": [
+								"api",
+								"catalogs"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getFindByIdCatalog",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "createCatalog",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"catalog_type\": \"estado_pedido\",\r\n  \"value\": \"PEND\",\r\n  \"text\": \"Pendiente\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url-laravel}}/api/catalogs",
+							"host": [
+								"{{url-laravel}}"
+							],
+							"path": [
+								"api",
+								"catalogs"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "updateCatalog",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{    \r\n  \"catalog_type\": \"estado_pedido\",\r\n  \"value\": \"PEND\",\r\n  \"text\": \"Pendiente\"\r\n}\r\n"
+						},
+						"url": {
+							"raw": "{{url-laravel}}/api/catalogs/1",
+							"host": [
+								"{{url-laravel}}"
+							],
+							"path": [
+								"api",
+								"catalogs",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "desactivateCatalog",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "{{url-laravel}}/api/catalogs/1/desactivate",
+							"host": [
+								"{{url-laravel}}"
+							],
+							"path": [
+								"api",
+								"catalogs",
+								"1",
+								"desactivate"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Administración",
+			"item": [
+				{
+					"name": "deportista",
+					"item": [
+						{
+							"name": "getAllSportsman",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url-laravel}}/api/sportsman",
+									"host": [
+										"{{url-laravel}}"
+									],
+									"path": [
+										"api",
+										"sportsman"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getFindByIdSportsman",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url-laravel}}/api/sportsman/1",
+									"host": [
+										"{{url-laravel}}"
+									],
+									"path": [
+										"api",
+										"sportsman",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "createSportsman",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"name\": \"Carlos\",\r\n  \"surname\": \"Mendoza\",\r\n  \"identification\": \"1728394056\",\r\n  \"birthdate\": \"1998-07-15\",\r\n  \"gender\": \"M\",\r\n  \"telephone\": \"0987654321\",\r\n  \"email\": \"carlos.mendoza@example.com\",\r\n  \"category\": \"Senior\",\r\n  \"current_ranking\": 12\r\n}\r\n\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url-laravel}}/api/sportsman",
+									"host": [
+										"{{url-laravel}}"
+									],
+									"path": [
+										"api",
+										"sportsman"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "updateSportsman",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{    \r\n  \"catalog_type\": \"estado_pedido\",\r\n  \"value\": \"PEND\",\r\n  \"text\": \"Pendiente\"\r\n}\r\n"
+								},
+								"url": {
+									"raw": "{{url-laravel}}/api/Sportsman/1",
+									"host": [
+										"{{url-laravel}}"
+									],
+									"path": [
+										"api",
+										"Sportsman",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "desactivateSportsman",
+							"request": {
+								"method": "PATCH",
+								"header": [],
+								"url": {
+									"raw": "{{url-laravel}}/api/Sportsman/1/desactivate",
+									"host": [
+										"{{url-laravel}}"
+									],
+									"path": [
+										"api",
+										"Sportsman",
+										"1",
+										"desactivate"
+									]
+								}
+							},
+							"response": []
+						}
+					]
 				}
 			]
 		}
