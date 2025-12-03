@@ -20,4 +20,8 @@ class Sportsman extends Model
         'current_ranking',
         'status'
         ];
+
+    protected $casts = [
+        'status' => 'boolean',
+    ];
 }
