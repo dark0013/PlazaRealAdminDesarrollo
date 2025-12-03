@@ -77,6 +77,12 @@ Route::prefix('categories')->group(function () {
     Route::patch('/{id}/activate', [\App\Http\Controllers\Api\CategoryController::class, 'activateCategory']);
 });
 
+Route::prefix('reservations')->group(function () {
+    Route::get('/', [\App\Http\Controllers\Api\ReservationController::class, 'getReservations']);
+    Route::post('/', [\App\Http\Controllers\Api\ReservationController::class, 'createReservation']);
+    Route::put('/{id}', [\App\Http\Controllers\Api\ReservationController::class, 'updateReservation']);
+});
+
 
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
