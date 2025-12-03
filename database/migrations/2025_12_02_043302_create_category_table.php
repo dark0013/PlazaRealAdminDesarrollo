@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('minimum_age');
             $table->string('maximum_age');
             $table->string('applicable_genre');            
-            $table->string('status')->default('active');            
+            $table->boolean('status')->default(true);     
             $table->timestamps();
         });
     }

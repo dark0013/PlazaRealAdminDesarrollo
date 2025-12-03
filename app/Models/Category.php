@@ -11,4 +11,8 @@ class Category extends Model
 
     protected $table = 'category';
     protected $fillable = ['name', 'description', 'minimum_age', 'maximum_age', 'applicable_genre', 'status'];
+
+      protected $casts = [
+        'status' => 'boolean',
+    ];
 }
