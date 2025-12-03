@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('surface_type');
             $table->string('available_schedule');
             $table->string('ability');
-            $table->string('status');
+            $table->boolean('status')->default(true);
             $table->timestamps();
         });
     }

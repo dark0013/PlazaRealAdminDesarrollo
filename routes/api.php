@@ -46,7 +46,7 @@ Route::prefix('sportsman')->group(function () {
     Route::get('/{id}', [\App\Http\Controllers\Api\SportsmanController::class, 'getSportsmanById']);
     Route::post('/', [\App\Http\Controllers\Api\SportsmanController::class, 'createSportsman']);
     Route::put('/{id}', [\App\Http\Controllers\Api\SportsmanController::class, 'updateSportsman']);
-    Route::patch('/{id}/desactivate', [\App\Http\Controllers\Api\SportsmanController::class, 'deactivateSportsman']);
+    Route::patch('/{id}/deactivate', [\App\Http\Controllers\Api\SportsmanController::class, 'deactivateSportsman']);
     Route::patch('/{id}/activate', [\App\Http\Controllers\Api\SportsmanController::class, 'activateSportsman']);
 });
 
@@ -55,7 +55,7 @@ Route::prefix('sports')->group(function () {
     Route::get('/{id}', [\App\Http\Controllers\Api\SportController::class, 'getSportById']);
     Route::post('/', [\App\Http\Controllers\Api\SportController::class, 'createSport']);
     Route::put('/{id}', [\App\Http\Controllers\Api\SportController::class, 'updateSport']);
-    Route::patch('/{id}/desactivate', [\App\Http\Controllers\Api\SportController::class, 'deactivateSport']);
+    Route::patch('/{id}/deactivate', [\App\Http\Controllers\Api\SportController::class, 'deactivateSport']);
     Route::patch('/{id}/activate', [\App\Http\Controllers\Api\SportController::class, 'activateSport']);
 });
 
@@ -64,7 +64,7 @@ Route::prefix('scenarios')->group(function () {
     Route::get('/{id}', [\App\Http\Controllers\Api\ScenarioController::class, 'getScenarioById']);
     Route::post('/', [\App\Http\Controllers\Api\ScenarioController::class, 'createScenario']);
     Route::put('/{id}', [\App\Http\Controllers\Api\ScenarioController::class, 'updateScenario']);
-    Route::patch('/{id}/desactivate', [\App\Http\Controllers\Api\ScenarioController::class, 'deactivateScenario']);
+    Route::patch('/{id}/deactivate', [\App\Http\Controllers\Api\ScenarioController::class, 'deactivateScenario']);
     Route::patch('/{id}/activate', [\App\Http\Controllers\Api\ScenarioController::class, 'activateScenario']);
 });
 
@@ -73,7 +73,7 @@ Route::prefix('categories')->group(function () {
     Route::get('/{id}', [\App\Http\Controllers\Api\CategoryController::class, 'getCategoryById']);
     Route::post('/', [\App\Http\Controllers\Api\CategoryController::class, 'createCategory']);
     Route::put('/{id}', [\App\Http\Controllers\Api\CategoryController::class, 'updateCategory']);
-    Route::patch('/{id}/desactivate', [\App\Http\Controllers\Api\CategoryController::class, 'deactivateCategory']);
+    Route::patch('/{id}/deactivate', [\App\Http\Controllers\Api\CategoryController::class, 'deactivateCategory']);
     Route::patch('/{id}/activate', [\App\Http\Controllers\Api\CategoryController::class, 'activateCategory']);
 });
 
