@@ -22,7 +22,7 @@ return new class extends Migration
             $table->string('email');
             $table->string('category');
             $table->string('current_ranking');
-            $table->string('status')->default('active');
+            $table->boolean('status')->default(true);
             $table->timestamps();
         });
     }
