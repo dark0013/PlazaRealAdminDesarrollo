@@ -6,7 +6,7 @@ use App\Http\Controllers\Api\RoleController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\PermissionController;
 
-Route::prefix('user')->group(function () {
+Route::prefix('users')->group(function () {
     Route::get('/', [UserController::class, 'getUsers']);
     Route::post('/', [UserController::class, 'createUser']);
     Route::put('/{id}', [UserController::class, 'updateUser']);

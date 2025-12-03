@@ -7,60 +7,37 @@
 	},
 	"item": [
 		{
-			"name": "user",
+			"name": "configuracion",
 			"item": [
 				{
-					"name": "getUsers",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{url-laravel}}/api/user",
-							"host": [
-								"{{url-laravel}}"
-							],
-							"path": [
-								"api",
-								"user"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "createUser",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"first_name\": \"Maggie\",\r\n    \"last_name\": \"Campoverde\",\r\n    \"identification_number\": \"0931779292\",\r\n    \"email\": \"alain0013@example.com\",\r\n    \"password\": \"Password123!\",\r\n    \"telephone\": \"0991234567\",\r\n    \"role\": \"admin\",\r\n    \"status\": \"active\"\r\n}\r\n",
-							"options": {
-								"raw": {
-									"language": "json"
+					"name": "user",
+					"item": [
+						{
+							"name": "getUsers",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url-laravel}}/api/user",
+									"host": [
+										"{{url-laravel}}"
+									],
+									"path": [
+										"api",
+										"user"
+									]
 								}
-							}
+							},
+							"response": []
 						},
-						"url": {
-							"raw": "{{url-laravel}}/api/user",
-							"host": [
-								"{{url-laravel}}"
-							],
-							"path": [
-								"api",
-								"user"
-							]
-						}
-					},
-					"response": [
 						{
 							"name": "createUser",
-							"originalRequest": {
+							"request": {
 								"method": "POST",
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"first_name\": \"Maggie\",\r\n    \"last_name\": \"Campoverde\",\r\n    \"identification_number\": \"0931779292\",\r\n    \"email\": \"alain0013@example.com\",\r\n    \"password\": \"Password123!\",\r\n    \"telephone\": \"0991234567\",\r\n    \"role\": \"admin\",\r\n    \"status\": \"active\"\r\n}\r\n",
+									"raw": "{\r\n    \"first_name\": \"Maggie\",\r\n    \"last_name\": \"Campoverde\",\r\n    \"identification_number\": \"0931779294\",\r\n    \"email\": \"alain00k13@example.com\",\r\n    \"password\": \"Password123!\",\r\n    \"telephone\": \"0991234567\",\r\n    \"role\": \"admin\",\r\n    \"status\": 1,\r\n    \"avatar\": \"images/avatars/male-02.png\"\r\n}\r\n",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -78,472 +55,500 @@
 									]
 								}
 							},
-							"_postman_previewlanguage": null,
-							"header": null,
-							"cookie": [],
-							"body": null
+							"response": [
+								{
+									"name": "createUser",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"first_name\": \"Maggie\",\r\n    \"last_name\": \"Campoverde\",\r\n    \"identification_number\": \"0931779292\",\r\n    \"email\": \"alain0013@example.com\",\r\n    \"password\": \"Password123!\",\r\n    \"telephone\": \"0991234567\",\r\n    \"role\": \"admin\",\r\n    \"status\": \"active\"\r\n}\r\n",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{url-laravel}}/api/user",
+											"host": [
+												"{{url-laravel}}"
+											],
+											"path": [
+												"api",
+												"user"
+											]
+										}
+									},
+									"_postman_previewlanguage": null,
+									"header": null,
+									"cookie": [],
+									"body": null
+								}
+							]
+						},
+						{
+							"name": "updateUser",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "  {\r\n    \"id\": 1,\r\n    \"first_name\": \"andre\",\r\n    \"last_name\": \"Campoverde\",\r\n    \"identification_number\": \"0102030405\",\r\n    \"email\": \"alain@example.com\",\r\n    \"telephone\": \"0991234567\",\r\n    \"password\": \"Password1235!\",\r\n    \"role\": \"admin\",\r\n    \"status\": \"active\"\r\n  }\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url-laravel}}/api/user/1",
+									"host": [
+										"{{url-laravel}}"
+									],
+									"path": [
+										"api",
+										"user",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "deactivateUser",
+							"request": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "  {\r\n    \"id\": 1,\r\n    \"first_name\": \"andre\",\r\n    \"last_name\": \"Campoverde\",\r\n    \"identification_number\": \"0102030405\",\r\n    \"email\": \"alain@example.com\",\r\n    \"telephone\": \"0991234567\",\r\n    \"password\": \"Password1235!\",\r\n    \"role\": \"admin\",\r\n    \"status\": \"active\"\r\n  }\r\n"
+								},
+								"url": {
+									"raw": "{{url-laravel}}/api/users/1/deactivate",
+									"host": [
+										"{{url-laravel}}"
+									],
+									"path": [
+										"api",
+										"users",
+										"1",
+										"deactivate"
+									]
+								}
+							},
+							"response": []
 						}
 					]
 				},
 				{
-					"name": "updateUser",
-					"request": {
-						"method": "PUT",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "  {\r\n    \"id\": 1,\r\n    \"first_name\": \"andre\",\r\n    \"last_name\": \"Campoverde\",\r\n    \"identification_number\": \"0102030405\",\r\n    \"email\": \"alain@example.com\",\r\n    \"telephone\": \"0991234567\",\r\n    \"password\": \"Password1235!\",\r\n    \"role\": \"admin\",\r\n    \"status\": \"active\"\r\n  }\r\n",
-							"options": {
-								"raw": {
-									"language": "json"
+					"name": "role",
+					"item": [
+						{
+							"name": "getRole",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url-laravel}}/api/role",
+									"host": [
+										"{{url-laravel}}"
+									],
+									"path": [
+										"api",
+										"role"
+									]
 								}
-							}
-						},
-						"url": {
-							"raw": "{{url-laravel}}/api/user/1",
-							"host": [
-								"{{url-laravel}}"
-							],
-							"path": [
-								"api",
-								"user",
-								"1"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "deactivateUser",
-					"request": {
-						"method": "PATCH",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "  {\r\n    \"id\": 1,\r\n    \"first_name\": \"andre\",\r\n    \"last_name\": \"Campoverde\",\r\n    \"identification_number\": \"0102030405\",\r\n    \"email\": \"alain@example.com\",\r\n    \"telephone\": \"0991234567\",\r\n    \"password\": \"Password1235!\",\r\n    \"role\": \"admin\",\r\n    \"status\": \"active\"\r\n  }\r\n"
-						},
-						"url": {
-							"raw": "{{url-laravel}}/api/users/1/deactivate",
-							"host": [
-								"{{url-laravel}}"
-							],
-							"path": [
-								"api",
-								"users",
-								"1",
-								"deactivate"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "role",
-			"item": [
-				{
-					"name": "getRole",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{url-laravel}}/api/role",
-							"host": [
-								"{{url-laravel}}"
-							],
-							"path": [
-								"api",
-								"role"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "createRole",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"name\":\"nose\",\r\n    \"description\":\"es que la plena que no se\",\r\n    \"permissions\":\"negado\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{url-laravel}}/api/role",
-							"host": [
-								"{{url-laravel}}"
-							],
-							"path": [
-								"api",
-								"role"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "updateRole",
-					"request": {
-						"method": "PUT",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"name\":\"nose\",\r\n    \"description\":\"es que la plena que no se\",\r\n    \"permissions\":\"activado\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{url-laravel}}/api/role/1",
-							"host": [
-								"{{url-laravel}}"
-							],
-							"path": [
-								"api",
-								"role",
-								"1"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "desactivateRole",
-					"request": {
-						"method": "PATCH",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"name\":\"nose\",\r\n    \"description\":\"es que la plena que no se\",\r\n    \"permissions\":\"activado\"\r\n}"
-						},
-						"url": {
-							"raw": "{{url-laravel}}/api/role/1/desactivate",
-							"host": [
-								"{{url-laravel}}"
-							],
-							"path": [
-								"api",
-								"role",
-								"1",
-								"desactivate"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "activateRole",
-					"request": {
-						"method": "PATCH",
-						"header": [],
-						"url": {
-							"raw": "{{url-laravel}}/api/role/1/activate",
-							"host": [
-								"{{url-laravel}}"
-							],
-							"path": [
-								"api",
-								"role",
-								"1",
-								"activate"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "Auth",
-			"item": [
-				{
-					"name": "login",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json",
-								"type": "text"
 							},
-							{
-								"key": "Content-Type",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n     \"email\": \"alain0013@example.com\",\r\n    \"password\": \"Password123!\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
+							"response": []
+						},
+						{
+							"name": "createRole",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\":\"nose\",\r\n    \"description\":\"es que la plena que no se\",\r\n    \"permissions\":\"negado\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url-laravel}}/api/role",
+									"host": [
+										"{{url-laravel}}"
+									],
+									"path": [
+										"api",
+										"role"
+									]
 								}
-							}
+							},
+							"response": []
 						},
-						"url": {
-							"raw": "{{url-laravel}}/api/login",
-							"host": [
-								"{{url-laravel}}"
-							],
-							"path": [
-								"api",
-								"login"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "logout",
-					"request": {
-						"method": "GET",
-						"header": []
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "Permission",
-			"item": [
-				{
-					"name": "getPermissions",
-					"request": {
-						"method": "GET",
-						"header": []
-					},
-					"response": []
-				},
-				{
-					"name": "createPermission",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "7|KDweSD44kXfPSbuCujAi2jMXLjr0smAjMtJwYQ1pb83150e3",
-									"type": "string"
+						{
+							"name": "updateRole",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\":\"nose\",\r\n    \"description\":\"es que la plena que no se\",\r\n    \"permissions\":\"activado\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url-laravel}}/api/role/1",
+									"host": [
+										"{{url-laravel}}"
+									],
+									"path": [
+										"api",
+										"role",
+										"1"
+									]
 								}
-							]
+							},
+							"response": []
 						},
-						"method": "POST",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"name\":\"usuariosx\",\r\n    \"description\":\"usuarios\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
+						{
+							"name": "desactivateRole",
+							"request": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\":\"nose\",\r\n    \"description\":\"es que la plena que no se\",\r\n    \"permissions\":\"activado\"\r\n}"
+								},
+								"url": {
+									"raw": "{{url-laravel}}/api/role/1/desactivate",
+									"host": [
+										"{{url-laravel}}"
+									],
+									"path": [
+										"api",
+										"role",
+										"1",
+										"desactivate"
+									]
 								}
-							}
+							},
+							"response": []
 						},
-						"url": {
-							"raw": "{{url-laravel}}/api/permission",
-							"host": [
-								"{{url-laravel}}"
-							],
-							"path": [
-								"api",
-								"permission"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "updatePermission",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "7|KDweSD44kXfPSbuCujAi2jMXLjr0smAjMtJwYQ1pb83150e3",
-									"type": "string"
+						{
+							"name": "activateRole",
+							"request": {
+								"method": "PATCH",
+								"header": [],
+								"url": {
+									"raw": "{{url-laravel}}/api/role/1/activate",
+									"host": [
+										"{{url-laravel}}"
+									],
+									"path": [
+										"api",
+										"role",
+										"1",
+										"activate"
+									]
 								}
-							]
-						},
-						"method": "PUT",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"name\":\"xxxxxx\",\r\n    \"description\":\"usuarios\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Auth",
+					"item": [
+						{
+							"name": "login",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n     \"email\": \"alain0013@example.com\",\r\n    \"password\": \"Password123!\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url-laravel}}/api/login",
+									"host": [
+										"{{url-laravel}}"
+									],
+									"path": [
+										"api",
+										"login"
+									]
 								}
-							}
+							},
+							"response": []
 						},
-						"url": {
-							"raw": "{{url-laravel}}/api/permission/1",
-							"host": [
-								"{{url-laravel}}"
-							],
-							"path": [
-								"api",
-								"permission",
-								"1"
-							]
+						{
+							"name": "logout",
+							"request": {
+								"method": "GET",
+								"header": []
+							},
+							"response": []
 						}
-					},
-					"response": []
+					]
 				},
 				{
-					"name": "desactivatePermission",
-					"request": {
-						"method": "PATCH",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "{{url-laravel}}/api/permission/1/desactivate",
-							"host": [
-								"{{url-laravel}}"
-							],
-							"path": [
-								"api",
-								"permission",
-								"1",
-								"desactivate"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "activatePermission",
-					"request": {
-						"method": "GET",
-						"header": []
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "catalogs",
-			"item": [
-				{
-					"name": "getAllCatalogs",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{url-laravel}}/api/catalogs",
-							"host": [
-								"{{url-laravel}}"
-							],
-							"path": [
-								"api",
-								"catalogs"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "getFindByIdCatalog",
-					"request": {
-						"method": "GET",
-						"header": []
-					},
-					"response": []
-				},
-				{
-					"name": "createCatalog",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n  \"catalog_type\": \"estado_pedido\",\r\n  \"value\": \"PEND\",\r\n  \"text\": \"Pendiente\"\r\n}\r\n",
-							"options": {
-								"raw": {
-									"language": "json"
+					"name": "Permission",
+					"item": [
+						{
+							"name": "getPermissions",
+							"request": {
+								"method": "GET",
+								"header": []
+							},
+							"response": []
+						},
+						{
+							"name": "createPermission",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "7|KDweSD44kXfPSbuCujAi2jMXLjr0smAjMtJwYQ1pb83150e3",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\":\"usuariosx\",\r\n    \"description\":\"usuarios\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url-laravel}}/api/permission",
+									"host": [
+										"{{url-laravel}}"
+									],
+									"path": [
+										"api",
+										"permission"
+									]
 								}
-							}
+							},
+							"response": []
 						},
-						"url": {
-							"raw": "{{url-laravel}}/api/catalogs",
-							"host": [
-								"{{url-laravel}}"
-							],
-							"path": [
-								"api",
-								"catalogs"
-							]
+						{
+							"name": "updatePermission",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "7|KDweSD44kXfPSbuCujAi2jMXLjr0smAjMtJwYQ1pb83150e3",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\":\"xxxxxx\",\r\n    \"description\":\"usuarios\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url-laravel}}/api/permission/1",
+									"host": [
+										"{{url-laravel}}"
+									],
+									"path": [
+										"api",
+										"permission",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "desactivatePermission",
+							"request": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{url-laravel}}/api/permission/1/desactivate",
+									"host": [
+										"{{url-laravel}}"
+									],
+									"path": [
+										"api",
+										"permission",
+										"1",
+										"desactivate"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "activatePermission",
+							"request": {
+								"method": "GET",
+								"header": []
+							},
+							"response": []
 						}
-					},
-					"response": []
+					]
 				},
 				{
-					"name": "updateCatalog",
-					"request": {
-						"method": "PUT",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{    \r\n  \"catalog_type\": \"estado_pedido\",\r\n  \"value\": \"PEND\",\r\n  \"text\": \"Pendiente\"\r\n}\r\n"
+					"name": "catalogs",
+					"item": [
+						{
+							"name": "getAllCatalogs",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url-laravel}}/api/catalogs",
+									"host": [
+										"{{url-laravel}}"
+									],
+									"path": [
+										"api",
+										"catalogs"
+									]
+								}
+							},
+							"response": []
 						},
-						"url": {
-							"raw": "{{url-laravel}}/api/catalogs/1",
-							"host": [
-								"{{url-laravel}}"
-							],
-							"path": [
-								"api",
-								"catalogs",
-								"1"
-							]
+						{
+							"name": "getFindByIdCatalog",
+							"request": {
+								"method": "GET",
+								"header": []
+							},
+							"response": []
+						},
+						{
+							"name": "createCatalog",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"catalog_type\": \"estado_pedido\",\r\n  \"value\": \"PEND\",\r\n  \"text\": \"Pendiente\"\r\n}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url-laravel}}/api/catalogs",
+									"host": [
+										"{{url-laravel}}"
+									],
+									"path": [
+										"api",
+										"catalogs"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "updateCatalog",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{    \r\n  \"catalog_type\": \"estado_pedido\",\r\n  \"value\": \"PEND\",\r\n  \"text\": \"Pendiente\"\r\n}\r\n"
+								},
+								"url": {
+									"raw": "{{url-laravel}}/api/catalogs/1",
+									"host": [
+										"{{url-laravel}}"
+									],
+									"path": [
+										"api",
+										"catalogs",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "desactivateCatalog",
+							"request": {
+								"method": "PATCH",
+								"header": [],
+								"url": {
+									"raw": "{{url-laravel}}/api/catalogs/1/desactivate",
+									"host": [
+										"{{url-laravel}}"
+									],
+									"path": [
+										"api",
+										"catalogs",
+										"1",
+										"desactivate"
+									]
+								}
+							},
+							"response": []
 						}
-					},
-					"response": []
-				},
-				{
-					"name": "desactivateCatalog",
-					"request": {
-						"method": "PATCH",
-						"header": [],
-						"url": {
-							"raw": "{{url-laravel}}/api/catalogs/1/desactivate",
-							"host": [
-								"{{url-laravel}}"
-							],
-							"path": [
-								"api",
-								"catalogs",
-								"1",
-								"desactivate"
-							]
-						}
-					},
-					"response": []
+					]
 				}
 			]
 		},
@@ -653,6 +658,342 @@
 									"path": [
 										"api",
 										"Sportsman",
+										"1",
+										"desactivate"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "escenario",
+					"item": [
+						{
+							"name": "getAllScenary",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url-laravel}}/api/scenarios",
+									"host": [
+										"{{url-laravel}}"
+									],
+									"path": [
+										"api",
+										"scenarios"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getFindByIdScenary",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url-laravel}}/api/scenarios/1",
+									"host": [
+										"{{url-laravel}}"
+									],
+									"path": [
+										"api",
+										"scenarios",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "createScenary",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"name\": \"Cancha Olímpica Central\",\r\n  \"description\": \"Escenario deportivo techado con capacidad para eventos múltiples\",\r\n  \"location\": \"Guayaquil, Ecuador\",\r\n  \"surface_type\": \"Césped sintético\",\r\n  \"available_schedule\": \"Lunes a Viernes 08:00 - 20:00\",\r\n  \"ability\": \"500 personas\",\r\n  \"status\": \"activo\"\r\n}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url-laravel}}/api/scenarios",
+									"host": [
+										"{{url-laravel}}"
+									],
+									"path": [
+										"api",
+										"scenarios"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "updateScenary",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"name\": \"Cancha Olímpica Central\",\r\n  \"description\": \"Escenario deportivo techado con capacidad para eventos múltiples\",\r\n  \"location\": \"Guayaquil, Ecuador\",\r\n  \"surface_type\": \"Césped sintético\",\r\n  \"available_schedule\": \"Lunes a Viernes 08:00 - 20:00\",\r\n  \"ability\": \"500 personas\",\r\n  \"status\": \"activo\"\r\n}\r\n"
+								},
+								"url": {
+									"raw": "{{url-laravel}}/api/scenarios/1",
+									"host": [
+										"{{url-laravel}}"
+									],
+									"path": [
+										"api",
+										"scenarios",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "desactivateScenary",
+							"request": {
+								"method": "PATCH",
+								"header": [],
+								"url": {
+									"raw": "{{url-laravel}}/api/scenarios/1/desactivate",
+									"host": [
+										"{{url-laravel}}"
+									],
+									"path": [
+										"api",
+										"scenarios",
+										"1",
+										"desactivate"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "categoria",
+					"item": [
+						{
+							"name": "getAllCategory",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url-laravel}}/api/categories",
+									"host": [
+										"{{url-laravel}}"
+									],
+									"path": [
+										"api",
+										"categories"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getFindByIdCategory",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url-laravel}}/api/categories/1",
+									"host": [
+										"{{url-laravel}}"
+									],
+									"path": [
+										"api",
+										"categories",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "createCategory",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"name\": \"Sub-18 Masculino\",\r\n  \"description\": \"Categoría juvenil para participantes menores de edad\",\r\n  \"minimum_age\": \"15\",\r\n  \"maximum_age\": \"18\",\r\n  \"applicable_genre\": \"masculino\",\r\n  \"status\": \"active\"\r\n}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url-laravel}}/api/categories",
+									"host": [
+										"{{url-laravel}}"
+									],
+									"path": [
+										"api",
+										"categories"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "updateCategory",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"name\": \"Sub-18 Masculino\",\r\n  \"description\": \"Categoría juvenil para participantes menores de edad\",\r\n  \"minimum_age\": \"15\",\r\n  \"maximum_age\": \"18\",\r\n  \"applicable_genre\": \"masculino\",\r\n  \"status\": \"active\"\r\n}\r\n"
+								},
+								"url": {
+									"raw": "{{url-laravel}}/api/categories/1",
+									"host": [
+										"{{url-laravel}}"
+									],
+									"path": [
+										"api",
+										"categories",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "desactivateCategory",
+							"request": {
+								"method": "PATCH",
+								"header": [],
+								"url": {
+									"raw": "{{url-laravel}}/api/categories/1/desactivate",
+									"host": [
+										"{{url-laravel}}"
+									],
+									"path": [
+										"api",
+										"categories",
+										"1",
+										"desactivate"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Deportes",
+					"item": [
+						{
+							"name": "getAllSport",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url-laravel}}/api/sports",
+									"host": [
+										"{{url-laravel}}"
+									],
+									"path": [
+										"api",
+										"sports"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getFindByIdSport",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url-laravel}}/api/sports/1",
+									"host": [
+										"{{url-laravel}}"
+									],
+									"path": [
+										"api",
+										"sports",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "createSport",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"name\": \"Fútbol\",\r\n  \"description\": \"Deporte colectivo jugado entre dos equipos de once jugadores\",\r\n  \"status\": \"active\"\r\n}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url-laravel}}/api/sports",
+									"host": [
+										"{{url-laravel}}"
+									],
+									"path": [
+										"api",
+										"sports"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "updateSport",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"name\": \"Fútbol\",\r\n  \"description\": \"Deporte colectivo jugado entre dos equipos de once jugadores\",\r\n  \"status\": \"active\"\r\n}\r\n"
+								},
+								"url": {
+									"raw": "{{url-laravel}}/api/sports/1",
+									"host": [
+										"{{url-laravel}}"
+									],
+									"path": [
+										"api",
+										"sports",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "desactivateSport",
+							"request": {
+								"method": "PATCH",
+								"header": [],
+								"url": {
+									"raw": "{{url-laravel}}/api/sports/1/desactivate",
+									"host": [
+										"{{url-laravel}}"
+									],
+									"path": [
+										"api",
+										"sports",
 										"1",
 										"desactivate"
 									]
