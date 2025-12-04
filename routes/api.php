@@ -9,9 +9,10 @@ use App\Http\Controllers\Api\PermissionController;
 Route::prefix('users')->group(function () {
     Route::get('/', [UserController::class, 'getUsers']);
     Route::post('/', [UserController::class, 'createUser']);
-    Route::put('/{id}', [UserController::class, 'updateUser']);
+    /* Route::put('/{id}', [UserController::class, 'updateUser']); */
     Route::patch('/{id}/deactivate', [UserController::class, 'deactivateUser']);
     Route::patch('/{id}/activate', [UserController::class, 'activateUser']);
+    Route::patch('/{id}', [UserController::class, 'updateUser']);
 });
 
 Route::prefix('roles')->group(function () {
