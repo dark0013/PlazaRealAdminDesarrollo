@@ -24,6 +24,7 @@ return new class extends Migration
             $table->string('avatar');
             $table->integer('role');            
             $table->boolean('status')->default(true);
+            $table->boolean('is_temporal')->default(true); 
             $table->rememberToken();
             $table->timestamps();
         });

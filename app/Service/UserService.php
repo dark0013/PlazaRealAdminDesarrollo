@@ -21,14 +21,11 @@ class UserService
             'email',
             'avatar',
             'status',
+            'is_temporal',
             'role',
             'password',
             'id'
         )->get();
-
-
-
-
 
         return $user->isEmpty() ? null : $user;
     }
