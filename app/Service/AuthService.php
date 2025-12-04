@@ -23,13 +23,16 @@ class AuthService
         }
 
         $user = User::select(
-            DB::raw("CONCAT(first_name, ' ', last_name) as name"),
+            'id',
+            'first_name',
+            DB::raw("CONCAT(primary_surname, ' ', secondary_surname) as full_last_name"),
             'email',
             'avatar',
             'status',
             'role',
             'password',
-            'id'
+            'is_temporal',
+            
         )
             ->where('email', $credentials['email'])
             ->first();
