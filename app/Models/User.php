@@ -53,6 +53,7 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
             'status' => 'boolean',
+            'is_temporal' => 'boolean',
         ];
     }
 }
