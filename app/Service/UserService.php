@@ -4,13 +4,33 @@ namespace App\Service;
 
 use App\Models\User;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
 
 class UserService
 {
+
+    
+
     public function getAllUsers()
     {
-        $users = User::all();
-        return $users->isEmpty() ? null : $users;
+          $user = User::select(
+            'first_name',
+            'primary_surname',
+            'secondary_surname',
+            DB::raw("CONCAT( primary_surname, ' ', secondary_surname) as full_last_name"),
+            'email',
+            'avatar',
+            'status',
+            'role',
+            'password',
+            'id'
+        )->get();
+
+
+
+
+
+        return $user->isEmpty() ? null : $user;
     }
 
     public function createUser(array $data)
