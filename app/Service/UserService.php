@@ -17,6 +17,7 @@ class UserService
             'first_name',
             'primary_surname',
             'secondary_surname',
+            'identification_number',
             DB::raw("CONCAT( primary_surname, ' ', secondary_surname) as full_last_name"),
             'email',
             'avatar',
