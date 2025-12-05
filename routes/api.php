@@ -10,7 +10,7 @@ Route::prefix('users')->group(function () {
     Route::get('/', [UserController::class, 'getUsers']);
     Route::post('/', [UserController::class, 'createUser']);
     Route::put('/{id}', [UserController::class, 'updateUser']);
-    Route::patch('/{id}/deactivate', [UserController::class, 'deactivateUser']);
+    Route::patch('/{id}/desactivate', [UserController::class, 'deactivateUser']);
     Route::patch('/{id}/activate', [UserController::class, 'activateUser']);
 });
 
@@ -18,7 +18,7 @@ Route::prefix('roles')->group(function () {
     Route::get('/', [RoleController::class, 'getRoles']);
     Route::post('/', [RoleController::class, 'createRole']);
     Route::put('/{id}', [RoleController::class, 'updateRole']);
-    Route::patch('/{id}/deactivate', [RoleController::class, 'deactivateRole']);
+    Route::patch('/{id}/desactivate', [RoleController::class, 'deactivateRole']);
     Route::patch('/{id}/activate', [RoleController::class, 'activateRole']);
 });
 
@@ -27,12 +27,15 @@ Route::middleware('auth:sanctum')->prefix('permission')->group(function () {
     Route::post('/', [PermissionController::class, 'createPermission']);
     Route::put('/{id}', [PermissionController::class, 'updatePermission']);
     Route::get('/{id}', [PermissionController::class, 'getPermission']);
-    Route::patch('/{id}/deactivate', [PermissionController::class, 'deactivatePermission']);
+    Route::patch('/{id}/desactivate', [PermissionController::class, 'deactivatePermission']);
     Route::patch('/{id}/activate', [PermissionController::class, 'activatePermission']);
 });
 
 Route::prefix('catalogs')->group(function () {
     Route::get('/', [\App\Http\Controllers\Api\CatalogController::class, 'getCatalogs']);
+    Route::get('/roles', [\App\Http\Controllers\Api\CatalogController::class, 'getRoles']);
+
+
     Route::get('/{id}', [\App\Http\Controllers\Api\CatalogController::class, 'getCatalog']);
     Route::post('/', [\App\Http\Controllers\Api\CatalogController::class, 'createCatalog']);
     Route::put('/{id}', [\App\Http\Controllers\Api\CatalogController::class, 'updateCatalog']);

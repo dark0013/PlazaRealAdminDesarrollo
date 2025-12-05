@@ -37,6 +37,16 @@ class CatalogController extends Controller
         return ResponseHelper::success($result);
     }
 
+    public function getRoles()
+    {
+        $roles = $this->catalogService->getRolesForCatalogs();
+
+        if (empty($roles)) {
+            return ResponseHelper::error('No roles found', 404);
+        }
+        return ResponseHelper::success($roles);
+    }
+
     public function createCatalog(Request $request)
     {
         $result = $this->catalogService->createCatalog($request->all());

@@ -56,4 +56,5 @@ class User extends Authenticatable
             'is_temporal' => 'boolean',
         ];
     }
+    
 }
