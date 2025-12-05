@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('rol', function (Blueprint $table) {
             $table->id();
             $table->string('name')->unique();
-            $table->string('description');
+            $table->string('description')->nullable();
             $table->string('permissions')->default('negado');            
             $table->boolean('status')->default(true);
             $table->timestamps();

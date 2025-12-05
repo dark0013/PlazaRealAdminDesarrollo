@@ -40,7 +40,7 @@ class UserService
             'secondary_surname' => 'required|string|max:255',
             'identification_number' => 'required|string|unique:users,identification_number',
             'email' => 'required|string|email|max:255|unique:users,email',
-            'password' => 'string|min:8',
+            'password' => 'min:8',
             'telephone' => 'nullable|string|max:20',
             'role' => 'required|integer'
         ]);
@@ -62,7 +62,7 @@ class UserService
             'secondary_surname' => 'required|string|max:255',
            /*  'identification_number' => 'required|string|unique:users,identification_number', */
             'email' => 'required|string|email|max:255,email',
-            'password' => 'string|min:8',
+            'password' => 'min:8',
             'telephone' => 'nullable|string|max:20',
             'role' => 'required|integer'
         ]);
