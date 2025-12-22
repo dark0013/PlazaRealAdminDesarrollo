@@ -67,7 +67,7 @@ class UserService
         if ($validator->fails()) {
             return ['errors' => $validator->errors()];
         }
-
+              
         $user = User::create($data);
 
         return $user ?: ['errors' => 'User creation failed'];
@@ -98,7 +98,7 @@ class UserService
             'email.required' => 'El correo electrónico es obligatorio.',
             'email.string' => 'El correo electrónico debe ser un texto válido.',
             'email.email' => 'El correo electrónico debe tener un formato válido.',
-            'email.max' => 'El correo electrónico no puede exceder 255 caracteres.',           
+            'email.max' => 'El correo electrónico no puede exceder 255 caracteres.',
             'telephone.string' => 'El número de teléfono debe ser un texto válido.',
             'telephone.max' => 'El número de teléfono no puede exceder 20 caracteres.',
             'role.required' => 'El rol es obligatorio.',

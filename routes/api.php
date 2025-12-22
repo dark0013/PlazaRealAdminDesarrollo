@@ -1,10 +1,14 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\UserController;
-use App\Http\Controllers\Api\RoleController;
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\MailController;
 use App\Http\Controllers\Api\PermissionController;
+use App\Http\Controllers\Api\ResetPasswordController;
+use App\Http\Controllers\Api\RoleController;
+use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\Api\ReservationController;
+use Illuminate\Support\Facades\Route;
+
 
 Route::prefix('users')->group(function () {
     Route::get('/', [UserController::class, 'getUsers']);
@@ -35,15 +39,14 @@ Route::prefix('catalogs')->group(function () {
     Route::get('/', [\App\Http\Controllers\Api\CatalogController::class, 'getCatalogs']);
     Route::get('/roles', [\App\Http\Controllers\Api\CatalogController::class, 'getRoles']);
 
-
     Route::get('/{id}', [\App\Http\Controllers\Api\CatalogController::class, 'getCatalog']);
     Route::post('/', [\App\Http\Controllers\Api\CatalogController::class, 'createCatalog']);
     Route::put('/{id}', [\App\Http\Controllers\Api\CatalogController::class, 'updateCatalog']);
-   /*  Route::patch('/{id}/desactivate', [\App\Http\Controllers\Api\CatalogController::class, 'desactivateCatalog']);
-    Route::patch('/{id}/activate', [\App\Http\Controllers\Api\CatalogController::class, 'activateCatalog']); */
+    /*  Route::patch('/{id}/desactivate', [\App\Http\Controllers\Api\CatalogController::class, 'desactivateCatalog']);
+     Route::patch('/{id}/activate', [\App\Http\Controllers\Api\CatalogController::class, 'activateCatalog']); */
 });
 
-//administración de deportistas
+// administración de deportistas
 Route::prefix('sportsman')->group(function () {
     Route::get('/', [\App\Http\Controllers\Api\SportsmanController::class, 'getAllSportsman']);
     Route::get('/{id}', [\App\Http\Controllers\Api\SportsmanController::class, 'getSportsmanById']);
@@ -81,11 +84,19 @@ Route::prefix('categories')->group(function () {
 });
 
 Route::prefix('reservations')->group(function () {
-    Route::get('/', [\App\Http\Controllers\Api\ReservationController::class, 'getReservations']);
-    Route::post('/', [\App\Http\Controllers\Api\ReservationController::class, 'createReservation']);
-    Route::put('/{id}', [\App\Http\Controllers\Api\ReservationController::class, 'updateReservation']);
+    Route::get('/', [ReservationController::class, 'index']);
+    Route::get('{id}', [ReservationController::class, 'show']);
+    Route::get('by-date/{date}', [ReservationController::class, 'byDate']);
+
+    Route::post('/', [ReservationController::class, 'store']);
+    Route::patch('{id}/approve', [ReservationController::class, 'approve']);
+    Route::patch('{id}/cancel', [ReservationController::class, 'cancel']);
+    Route::patch('{id}/reschedule', [ReservationController::class, 'reschedule']);
+    Route::post('/block', [ReservationController::class, 'block']);
 });
 
+Route::post('/enviar-correo', [MailController::class, 'enviar']);
+Route::post('/resetPassword', [ResetPasswordController::class, 'resetPassword']);
 
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
