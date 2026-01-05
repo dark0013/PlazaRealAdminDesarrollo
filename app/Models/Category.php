@@ -7,12 +7,17 @@ use Illuminate\Database\Eloquent\Model;
 
 class Category extends Model
 {
-    use HasFactory;
+  use HasFactory;
 
-    protected $table = 'category';
-    protected $fillable = ['name', 'description', 'minimum_age', 'maximum_age', 'applicable_genre', 'status'];
+  protected $table = 'category';
+  protected $fillable = ['name', 'description', 'minimum_age', 'maximum_age', 'applicable_genre', 'status'];
 
-      protected $casts = [
-        'status' => 'boolean',
-    ];
+  protected $casts = [
+    'status' => 'boolean',
+  ];
+
+  public function tournaments()
+  {
+    return $this->hasMany(Tournament::class, 'category_id');
+  }
 }

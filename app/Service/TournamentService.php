@@ -1,0 +1,48 @@
+<?php
+namespace App\Service;
+
+use Illuminate\Support\Facades\Validator;
+use App\Models\Tournament;
+use Carbon\Carbon;
+
+class TournamentService
+{
+      /**
+     * Crear torneo
+     */
+    public function create(array $data): Tournament
+    {
+        return Tournament::create([
+            'name'            => $data['name'],
+            'start_date'      => $data['start_date'],
+            'end_date'        => $data['end_date'],
+            'tournament_type' => $data['tournament_type'],
+            'mode'            => $data['mode'],
+            'category_id'     => $data['category_id'],
+            'description'     => $data['description'] ?? null,
+            'status'          => 'ACTIVE'
+        ]);
+    }
+
+    /**
+     * Actualizar torneo
+     */
+    public function update(Tournament $tournament, array $data): Tournament
+    {
+        $tournament->update($data);
+        return $tournament;
+    }
+
+    /**
+     * Cerrar torneo
+     */
+    public function close(Tournament $tournament): Tournament
+    {
+        $tournament->update([
+            'status' => 'FINISHED',
+            'end_date' => Carbon::now()->toDateString()
+        ]);
+
+        return $tournament;
+    }
+}

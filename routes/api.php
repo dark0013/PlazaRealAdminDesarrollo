@@ -7,6 +7,8 @@ use App\Http\Controllers\Api\ResetPasswordController;
 use App\Http\Controllers\Api\RoleController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\ReservationController;
+use App\Http\Controllers\Api\TournamentController;
+
 use Illuminate\Support\Facades\Route;
 
 
@@ -94,6 +96,22 @@ Route::prefix('reservations')->group(function () {
     Route::patch('{id}/reschedule', [ReservationController::class, 'reschedule']);
     Route::post('/block', [ReservationController::class, 'block']);
 });
+
+Route::prefix('admin/tournaments')->group(function () {
+
+    Route::get('/', [TournamentController::class, 'index']);
+    Route::post('/', [TournamentController::class, 'store']);
+    Route::get('/{tournament}', [TournamentController::class, 'show']);
+    Route::put('/{tournament}', [TournamentController::class, 'update']);
+    Route::post('/{tournament}/close', [TournamentController::class, 'close']);
+
+    Route::post('/{tournament}/participants', [TournamentController::class, 'registerParticipant']);
+    Route::delete('/participants/{participant}', [TournamentController::class, 'removeParticipant']);
+
+    Route::post('/{tournament}/matches', [TournamentController::class, 'createMatch']);
+    Route::post('/matches/{match}/result', [TournamentController::class, 'registerResult']);
+});
+
 
 Route::post('/enviar-correo', [MailController::class, 'enviar']);
 Route::post('/resetPassword', [ResetPasswordController::class, 'resetPassword']);

@@ -19,9 +19,24 @@ class Sportsman extends Model
         'category',
         'current_ranking',
         'status'
-        ];
+    ];
 
     protected $casts = [
         'status' => 'boolean',
     ];
+
+    public function tournamentParticipations()
+    {
+        return $this->hasMany(TournamentParticipant::class, 'sportsman_id');
+    }
+
+    public function matchesAsPlayer1()
+    {
+        return $this->hasMany(TournamentMatch::class, 'player1_id');
+    }
+
+    public function matchesAsPlayer2()
+    {
+        return $this->hasMany(TournamentMatch::class, 'player2_id');
+    }
 }
