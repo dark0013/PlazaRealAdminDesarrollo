@@ -3,6 +3,8 @@ namespace App\Service;
 
 use App\Models\Catalog;
 use App\Models\Role;
+use App\Models\Sportsman;
+use App\Models\Scenario;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -31,6 +33,27 @@ class CatalogService
             ->select('id as value_key', 'name as option_value')
             ->get();
         return $roles->isEmpty() ? null : $roles;
+    }
+
+    public function getScenariosForCatalogs()
+    {
+        $scenario = Scenario::where('status', true)
+            ->select('id as value_key', 'name as option_value')
+            ->get();
+        return $scenario->isEmpty() ? null : $scenario;
+    }
+
+    public function getSportManForCatalogs()
+    {
+        $sportsmen = DB::table('sportsman')
+            ->select(
+                'id',
+                DB::raw("CONCAT(name, ' ', surname) as full_name")
+            )
+            ->where('status', true)
+            ->get();
+
+        return $sportsmen->isEmpty() ? null : $sportsmen;
     }
 
     public function createCatalog(array $data)

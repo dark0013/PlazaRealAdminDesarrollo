@@ -42,9 +42,29 @@ class CatalogController extends Controller
         $roles = $this->catalogService->getRolesForCatalogs();
 
         if (empty($roles)) {
-            return ResponseHelper::error('No roles found', 404);
+            return ResponseHelper::error('No hay roles registrados', 404);
         }
         return ResponseHelper::success($roles);
+    }
+
+    public function getScenarios()
+    {
+        $scenarios = $this->catalogService->getScenariosForCatalogs();
+
+        if (empty($scenarios)) {
+            return ResponseHelper::error('No hay escenarios registrados', 404);
+        }
+        return ResponseHelper::success($scenarios);
+    }
+
+    public function getSportsmen()
+    {
+        $sportsmen = $this->catalogService->getSportManForCatalogs();
+
+        if (empty($sportsmen)) {
+            return ResponseHelper::error('No hay deportistas registrados', 404);
+        }
+        return ResponseHelper::success($sportsmen);
     }
 
     public function createCatalog(Request $request)

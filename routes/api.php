@@ -3,14 +3,12 @@
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\MailController;
 use App\Http\Controllers\Api\PermissionController;
+use App\Http\Controllers\Api\ReservationController;
 use App\Http\Controllers\Api\ResetPasswordController;
 use App\Http\Controllers\Api\RoleController;
-use App\Http\Controllers\Api\UserController;
-use App\Http\Controllers\Api\ReservationController;
 use App\Http\Controllers\Api\TournamentController;
-
+use App\Http\Controllers\Api\UserController;
 use Illuminate\Support\Facades\Route;
-
 
 Route::prefix('users')->group(function () {
     Route::get('/', [UserController::class, 'getUsers']);
@@ -40,6 +38,8 @@ Route::middleware('auth:sanctum')->prefix('permission')->group(function () {
 Route::prefix('catalogs')->group(function () {
     Route::get('/', [\App\Http\Controllers\Api\CatalogController::class, 'getCatalogs']);
     Route::get('/roles', [\App\Http\Controllers\Api\CatalogController::class, 'getRoles']);
+    Route::get('/sportsmen', [\App\Http\Controllers\Api\CatalogController::class, 'getSportsmen']);
+    Route::get('/scenarios', [\App\Http\Controllers\Api\CatalogController::class, 'getScenarios']);
 
     Route::get('/{id}', [\App\Http\Controllers\Api\CatalogController::class, 'getCatalog']);
     Route::post('/', [\App\Http\Controllers\Api\CatalogController::class, 'createCatalog']);
@@ -98,7 +98,6 @@ Route::prefix('reservations')->group(function () {
 });
 
 Route::prefix('admin/tournaments')->group(function () {
-
     Route::get('/', [TournamentController::class, 'index']);
     Route::post('/', [TournamentController::class, 'store']);
     Route::get('/{tournament}', [TournamentController::class, 'show']);
@@ -111,7 +110,6 @@ Route::prefix('admin/tournaments')->group(function () {
     Route::post('/{tournament}/matches', [TournamentController::class, 'createMatch']);
     Route::post('/matches/{match}/result', [TournamentController::class, 'registerResult']);
 });
-
 
 Route::post('/enviar-correo', [MailController::class, 'enviar']);
 Route::post('/resetPassword', [ResetPasswordController::class, 'resetPassword']);
