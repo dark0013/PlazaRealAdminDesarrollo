@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Service\UserService;
 use App\Helpers\ResponseHelper;
+use Illuminate\Support\Facades\Log;
 
 class UserController extends Controller
 {
@@ -49,7 +50,11 @@ class UserController extends Controller
 
     public function deactivateUser($id)
     {
+
         $user = $this->userService->updateStatus($id, false);
+        Log::info('Entré a deactivateUser');
+        Log::info('Datos del usuario:', ['user' => $user]);
+
 
         return ResponseHelper::success($user, 200);
     }

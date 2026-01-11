@@ -5,6 +5,9 @@ namespace App\Service;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+
 
 class UserService
 {
@@ -81,7 +84,7 @@ class UserService
             'secondary_surname' => 'required|string|max:255',
             'identification_number' => 'required|',
             'email' => 'required|string|email|max:255,email',
-            'password' => 'min:8',
+            //'password' => 'min:8',
             'telephone' => 'nullable|string|max:20',
             'role' => 'required|integer'
         ], [
@@ -111,14 +114,18 @@ class UserService
 
         $user = User::findOrFail($id);
 
+        unset($data['password']);
+        
         $user->update($data);
 
         return $user;
     }
 
-    public function updateStatus(int $id, string $status)
+    public function updateStatus(int $id, $status)
     {
         $user = User::findOrFail($id);
+
+        Log::info('Datos del usuario:', ['user.status' => $user->status, 'status' => $status]);
 
         $user->status = $status;
         $user->save();
