@@ -17,9 +17,9 @@ class CategoryService
     {
         $category = Category::find($id);
         if (!$category) {
-            return ['errors' => 'Category not found'];
+            return ['errors' => 'Categoría no encontrada'];
         }
-        return $category ?: ['errors' => 'Category not found'];
+        return $category ?: ['errors' => 'Categoría no encontrada'];
     }
 
     public function createCategory(array $data)
@@ -35,20 +35,27 @@ class CategoryService
 
         $category = Category::create($data);
 
-        return $category ?: ['errors' => 'Category creation failed'];
+        return $category ?: ['errors' => 'Error al crear la categoría'];
     }
 
     public function updateCategory($id, array $data)
     {
         $category = Category::find($id);
         if (!$category) {
-            return ['errors' => 'Category not found'];
+            return ['errors' => 'Categoría no encontrada'];
         }
 
         $validator = Validator::make($data, [
             'name' => 'sometimes|required|string|unique:category,name,' . $id,
             'description' => 'sometimes|required|string',
-        ]);
+        ],
+            [
+                'name.required' => 'El nombre es obligatorio.',
+                'name.string' => 'El nombre debe ser un texto.',
+                'name.unique' => 'El nombre ya está registrado.',
+                'description.required' => 'La descripción es obligatoria.',
+                'description.string' => 'La descripción debe ser un texto.',
+            ]);
 
         if ($validator->fails()) {
             return ['errors' => $validator->errors()];
@@ -56,19 +63,19 @@ class CategoryService
 
         $category->update($data);
 
-        return $category ?: ['errors' => 'Category update failed'];
+        return $category ?: ['errors' => 'La actualización de la categoría falló.'];
     }
 
     public function changeCategoryStatus($id, bool $status)
     {
         $category = Category::find($id);
         if (!$category) {
-            return ['errors' => 'Category not found'];
+            return ['errors' => 'Categoría no encontrada'];
         }
 
         $category->status = $status;
         $category->save();
 
-        return $category ?: ['errors' => 'Category status update failed'];
+        return $category ?: ['errors' => 'La actualización del estado de la categoría falló.'];
     }
 }

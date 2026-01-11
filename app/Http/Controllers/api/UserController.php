@@ -21,7 +21,7 @@ class UserController extends Controller
     {
         $users = $this->userService->getAllUsers();
         if (empty($users)) {
-            return ResponseHelper::error('No users found', 404);
+            return ResponseHelper::error('No se encontraron usuarios', 404);
         }
         return ResponseHelper::success($users);
     }
@@ -34,7 +34,7 @@ class UserController extends Controller
             return ResponseHelper::error($result['errors'], 400);
         }
 
-        return ResponseHelper::success($result, 'User created', 201);
+        return ResponseHelper::success($result, 'Usuario creado', 201);
     }
 
     public function updateUser(Request $request, $id)
@@ -45,7 +45,7 @@ class UserController extends Controller
             return ResponseHelper::error($result['errors'], 400);
         }
 
-        return ResponseHelper::success($result, 'User updated', 200);
+        return ResponseHelper::success($result, 'Usuario actualizado', 200);
     }
 
     public function deactivateUser($id)

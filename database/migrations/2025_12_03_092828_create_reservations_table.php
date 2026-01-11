@@ -12,16 +12,18 @@ return new class extends Migration {
     {
         Schema::create('reservations', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('athlete_id');
+
+            $table->unsignedBigInteger('sportsman_id')->nullable();
+
             $table->unsignedBigInteger('court_id');
 
             $table->date('reservation_date');
             $table->time('start_time');
             $table->time('end_time');
 
-            $table->integer('duration')->nullable();
-            $table->string('status');
-            $table->string('reservation_type');
+            $table->integer('duration')->nullable();  // minutos (calculado)
+            $table->string('status');  // PENDING, APPROVED, CANCELLED, BLOCKED
+            $table->string('reservation_type');  // NORMAL, TOURNAMENT, MAINTENANCE
             $table->string('notes')->nullable();
 
             $table->timestamps();
