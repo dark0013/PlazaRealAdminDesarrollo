@@ -33,12 +33,7 @@ class TournamentController extends Controller
     /**
      * Listar torneos
      */
-   /*  public function index()
-    {
-        return response()->json(
-            Tournament::orderBy('start_date', 'desc')->get()
-        );
-    } */
+
     public function index()
     {
         $listTournaments = $this->tournamentService->listTournaments();
@@ -53,19 +48,15 @@ class TournamentController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'name'            => 'required|string|max:255',
-            'start_date'      => 'required|date',
-            'end_date'        => 'nullable|date|after_or_equal:start_date',
-            'tournament_type' => 'required|string',
-            'mode'            => 'required|string',
-            'category_id'     => 'required|integer',
-            'description'     => 'nullable|string'
-        ]);
+       
 
         $tournament = $this->tournamentService->create($request->all());
+         if (isset($tournament['errors'])) {
+            return ResponseHelper::error($tournament['errors'], 400);
+        }
 
-        return response()->json($tournament, 201);
+
+        return ResponseHelper::success($tournament, 201);
     }
 
     /**

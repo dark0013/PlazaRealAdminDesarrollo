@@ -10,7 +10,7 @@ class TournamentService
     public function listTournaments()
     {
         $listTournaments = Tournament::orderBy('start_date', 'desc')->get();
-          if (!$listTournaments) {
+        if (!$listTournaments) {
             return ['errors' => 'No hay torneos registrados'];
         }
         return $listTournaments ?: ['errors' => 'No hay torneos registrados'];
@@ -21,7 +21,21 @@ class TournamentService
      */
     public function create(array $data): Tournament
     {
-        return Tournament::create([
+        $validator = Validator::make($data, [
+            'name' => 'required|string|max:255',
+            'start_date' => 'required|date',
+            'end_date' => 'nullable|date|after_or_equal:start_date',
+            'tournament_type' => 'required|string',
+            'mode' => 'required|string',
+            'category_id' => 'required|integer',
+            'description' => 'nullable|string'
+        ]);
+
+        if ($validator->fails()) {
+            return ['errors' => $validator->errors()];
+        }
+
+        $tournament = Tournament::create([
             'name' => $data['name'],
             'start_date' => $data['start_date'],
             'end_date' => $data['end_date'],
@@ -31,6 +45,7 @@ class TournamentService
             'description' => $data['description'] ?? null,
             'status' => 'ACTIVE'
         ]);
+        return $tournament ?: ['errors' => 'Error al crear el torneo'];
     }
 
     /**
