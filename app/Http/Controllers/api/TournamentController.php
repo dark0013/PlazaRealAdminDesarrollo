@@ -12,6 +12,7 @@ use App\Service\TournamentService;
 use App\Service\TournamentParticipantService;
 use App\Service\TournamentMatchService;
 use Illuminate\Http\Request;
+use App\Helpers\ResponseHelper;
 
 class TournamentController extends Controller
 {
@@ -32,11 +33,19 @@ class TournamentController extends Controller
     /**
      * Listar torneos
      */
-    public function index()
+   /*  public function index()
     {
         return response()->json(
             Tournament::orderBy('start_date', 'desc')->get()
         );
+    } */
+    public function index()
+    {
+        $listTournaments = $this->tournamentService->listTournaments();
+        if (empty($listTournaments)) {
+            return response()->json(['message' => 'No hay torneos registrados'], 404);
+        }
+        return ResponseHelper::success($listTournaments);
     }
 
     /**

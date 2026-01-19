@@ -1,26 +1,35 @@
 <?php
 namespace App\Service;
 
-use Illuminate\Support\Facades\Validator;
 use App\Models\Tournament;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Validator;
 
 class TournamentService
 {
-      /**
+    public function listTournaments()
+    {
+        $listTournaments = Tournament::orderBy('start_date', 'desc')->get();
+          if (!$listTournaments) {
+            return ['errors' => 'No hay torneos registrados'];
+        }
+        return $listTournaments ?: ['errors' => 'No hay torneos registrados'];
+    }
+
+    /**
      * Crear torneo
      */
     public function create(array $data): Tournament
     {
         return Tournament::create([
-            'name'            => $data['name'],
-            'start_date'      => $data['start_date'],
-            'end_date'        => $data['end_date'],
+            'name' => $data['name'],
+            'start_date' => $data['start_date'],
+            'end_date' => $data['end_date'],
             'tournament_type' => $data['tournament_type'],
-            'mode'            => $data['mode'],
-            'category_id'     => $data['category_id'],
-            'description'     => $data['description'] ?? null,
-            'status'          => 'ACTIVE'
+            'mode' => $data['mode'],
+            'category_id' => $data['category_id'],
+            'description' => $data['description'] ?? null,
+            'status' => 'ACTIVE'
         ]);
     }
 
