@@ -78,6 +78,15 @@ class CatalogController extends Controller
         return ResponseHelper::success($categories);
     }
 
+        public function getSportCatalogs()
+    {
+        $sports = $this->catalogService->getSportCatalogs();
+
+         if ($sports === null || $sports->isEmpty()) {
+            return ResponseHelper::error('No hay deportes registrados', 404);
+        }
+        return ResponseHelper::success($sports);
+    }
 
 
 

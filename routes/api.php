@@ -42,7 +42,10 @@ Route::prefix('catalogs')->group(function () {
     Route::get('/sportsmen', [\App\Http\Controllers\Api\CatalogController::class, 'getSportsmen']);
     Route::get('/scenarios', [\App\Http\Controllers\Api\CatalogController::class, 'getScenarios']);
     Route::get('/categories', [\App\Http\Controllers\Api\CatalogController::class, 'categoriaCatalogs']);
-
+   // Route::get('/categories', [\App\Http\Controllers\Api\CatalogController::class, 'categoriaCatalogs']);
+    Route::get('/sports', [\App\Http\Controllers\Api\CatalogController::class, 'getSportCatalogs']);
+  
+  
     Route::get('/{id}', [\App\Http\Controllers\Api\CatalogController::class, 'getCatalog']);
     Route::post('/', [\App\Http\Controllers\Api\CatalogController::class, 'createCatalog']);
     Route::put('/{id}', [\App\Http\Controllers\Api\CatalogController::class, 'updateCatalog']);
