@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\ResetPasswordController;
 use App\Http\Controllers\Api\RoleController;
 use App\Http\Controllers\Api\TournamentController;
 use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\Api\CatalogController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('users')->group(function () {
@@ -40,6 +41,7 @@ Route::prefix('catalogs')->group(function () {
     Route::get('/roles', [\App\Http\Controllers\Api\CatalogController::class, 'getRoles']);
     Route::get('/sportsmen', [\App\Http\Controllers\Api\CatalogController::class, 'getSportsmen']);
     Route::get('/scenarios', [\App\Http\Controllers\Api\CatalogController::class, 'getScenarios']);
+    Route::get('/categories', [\App\Http\Controllers\Api\CatalogController::class, 'categoriaCatalogs']);
 
     Route::get('/{id}', [\App\Http\Controllers\Api\CatalogController::class, 'getCatalog']);
     Route::post('/', [\App\Http\Controllers\Api\CatalogController::class, 'createCatalog']);

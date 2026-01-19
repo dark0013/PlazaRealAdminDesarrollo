@@ -2,9 +2,10 @@
 namespace App\Service;
 
 use App\Models\Catalog;
+use App\Models\Category;
 use App\Models\Role;
-use App\Models\Sportsman;
 use App\Models\Scenario;
+use App\Models\Sportsman;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -54,6 +55,15 @@ class CatalogService
             ->get();
 
         return $sportsmen->isEmpty() ? null : $sportsmen;
+    }
+
+    public function getCategorCatalogs()
+    {
+        $categories = Category::where('status', true)
+            ->select('id as value_key', 'name as option_value')
+            ->get();
+
+        return $categories->isEmpty() ? null : $categories;
     }
 
     public function createCatalog(array $data)

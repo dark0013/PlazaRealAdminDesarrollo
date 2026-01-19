@@ -57,6 +57,7 @@ class CatalogController extends Controller
         return ResponseHelper::success($scenarios);
     }
 
+    
     public function getSportsmen()
     {
         $sportsmen = $this->catalogService->getSportManForCatalogs();
@@ -66,6 +67,30 @@ class CatalogController extends Controller
         }
         return ResponseHelper::success($sportsmen);
     }
+
+    public function categoriaCatalogs()
+    {
+        $categories = $this->catalogService->getCategorCatalogs();
+
+         if ($categories === null || $categories->isEmpty()) {
+            return ResponseHelper::error('No hay categorías registradas', 404);
+        }
+        return ResponseHelper::success($categories);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     public function createCatalog(Request $request)
     {
