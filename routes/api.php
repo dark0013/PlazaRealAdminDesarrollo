@@ -1,14 +1,15 @@
 <?php
 
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\CatalogController;
 use App\Http\Controllers\Api\MailController;
 use App\Http\Controllers\Api\PermissionController;
 use App\Http\Controllers\Api\ReservationController;
+use App\Http\Controllers\Api\ReservationsController;
 use App\Http\Controllers\Api\ResetPasswordController;
 use App\Http\Controllers\Api\RoleController;
 use App\Http\Controllers\Api\TournamentController;
 use App\Http\Controllers\Api\UserController;
-use App\Http\Controllers\Api\CatalogController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('users')->group(function () {
@@ -42,15 +43,14 @@ Route::prefix('catalogs')->group(function () {
     Route::get('/sportsmen', [\App\Http\Controllers\Api\CatalogController::class, 'getSportsmen']);
     Route::get('/scenarios', [\App\Http\Controllers\Api\CatalogController::class, 'getScenarios']);
     Route::get('/categories', [\App\Http\Controllers\Api\CatalogController::class, 'categoriaCatalogs']);
-   // Route::get('/categories', [\App\Http\Controllers\Api\CatalogController::class, 'categoriaCatalogs']);
+    // Route::get('/categories', [\App\Http\Controllers\Api\CatalogController::class, 'categoriaCatalogs']);
     Route::get('/sports', [\App\Http\Controllers\Api\CatalogController::class, 'getSportCatalogs']);
-  
-  
+
     Route::get('/{id}', [\App\Http\Controllers\Api\CatalogController::class, 'getCatalog']);
     Route::post('/', [\App\Http\Controllers\Api\CatalogController::class, 'createCatalog']);
     Route::put('/{id}', [\App\Http\Controllers\Api\CatalogController::class, 'updateCatalog']);
-   /*  Route::patch('/{id}/deactivate', [\App\Http\Controllers\Api\CatalogController::class, 'deactivateCatalog']);
-    Route::patch('/{id}/activate', [\App\Http\Controllers\Api\CatalogController::class, 'activateCatalog']); */
+    /*  Route::patch('/{id}/deactivate', [\App\Http\Controllers\Api\CatalogController::class, 'deactivateCatalog']);
+     Route::patch('/{id}/activate', [\App\Http\Controllers\Api\CatalogController::class, 'activateCatalog']); */
 });
 
 // administración de deportistas
@@ -100,6 +100,10 @@ Route::prefix('reservations')->group(function () {
     Route::patch('{id}/cancel', [ReservationController::class, 'cancel']);
     Route::patch('{id}/reschedule', [ReservationController::class, 'reschedule']);
     Route::post('/block', [ReservationController::class, 'block']);
+});
+
+Route::prefix('reservationsx')->group(function () {
+    Route::get('by-date/{id}/{date}', [ReservationsController::class, 'getReservationsByIdDate']);
 });
 
 Route::prefix('admin/tournaments')->group(function () {

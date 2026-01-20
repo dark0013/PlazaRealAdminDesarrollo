@@ -26,7 +26,7 @@ class TournamentService
             'start_date' => 'required|date',
             'end_date' => 'nullable|date|after_or_equal:start_date',
             'tournament_type' => 'required|string',
-            'mode' => 'required|string',
+           // 'mode' => 'required|string',
             'category_id' => 'required|integer',
             'description' => 'nullable|string'
         ]);
