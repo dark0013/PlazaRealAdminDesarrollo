@@ -30,6 +30,9 @@ Schema::create('tournaments', function (Blueprint $table) {
     $table->string('status', 20)->default('PENDING');
 
     $table->text('description')->nullable();
+    
+    $table->integer('isTeam');
+    $table->integer('partitioning_amount');
 
     $table->timestamps();
 
