@@ -16,7 +16,9 @@ class Tournament extends Model
         'mode',
         'category_id',
         'status',
-        'description'
+        'description',
+        'isTeam',
+        'partitioning_amount'
     ];
 
     /* ======================

@@ -115,7 +115,8 @@ Route::prefix('admin/tournaments')->group(function () {
     Route::put('/{tournament}', [TournamentController::class, 'update']);
     Route::post('/{tournament}/close', [TournamentController::class, 'close']);
 
-    Route::post('/{tournament}/participants', [TournamentController::class, 'registerParticipant']);
+    Route::post('/participants', [TournamentController::class, 'registerParticipant']);
+
     Route::delete('/participants/{participant}', [TournamentController::class, 'removeParticipant']);
 
     Route::post('/{tournament}/matches', [TournamentController::class, 'createMatch']);

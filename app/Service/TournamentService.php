@@ -43,7 +43,9 @@ class TournamentService
             'mode' => $data['mode'],
             'category_id' => $data['category_id'],
             'description' => $data['description'] ?? null,
-            'status' => 'ACTIVE'
+            'status' => 'ACTIVE',
+            'isTeam' => $data['isTeam'],
+            'partitioning_amount' => $data['partitioning_amount']
         ]);
         return $tournament ?: ['errors' => 'Error al crear el torneo'];
     }

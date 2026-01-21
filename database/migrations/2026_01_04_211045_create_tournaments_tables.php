@@ -10,38 +10,32 @@ return new class extends Migration {
      */
     public function up(): void
     {
-Schema::create('tournaments', function (Blueprint $table) {
-    $table->id();
+        Schema::create('tournaments', function (Blueprint $table) {
+            $table->id();
 
-    $table->string('name');
-    $table->date('start_date');
-    $table->date('end_date');
+            $table->string('name');
+            $table->date('start_date');
+            $table->date('end_date');
 
-    // INDIVIDUAL | DOUBLES
-    $table->string('tournament_type', 20);
+            // INDIVIDUAL | DOUBLES
+            $table->string('tournament_type', 20);
 
-    // CATEGORY | OPEN
-    $table->string('mode', 20)->default('CATEGORY');
+            // CATEGORY | OPEN
+            $table->string('mode', 20)->default('CATEGORY');
 
-    // Relación con category (tabla REAL)
-    $table->unsignedBigInteger('category_id')->nullable();
+            // Relación con category (tabla REAL)
+            $table->unsignedBigInteger('category_id')->nullable();
 
-    // PENDING | ACTIVE | FINISHED | CANCELLED
-    $table->string('status', 20)->default('PENDING');
+            // PENDING | ACTIVE | FINISHED | CANCELLED
+            $table->string('status', 20)->default('PENDING');
 
-    $table->text('description')->nullable();
-    
-    $table->integer('isTeam');
-    $table->integer('partitioning_amount');
+            $table->text('description')->nullable();
 
-    $table->timestamps();
+            $table->integer('isTeam');
+            $table->integer('partitioning_amount');
 
-    /* $table->foreign('category_id')
-        ->references('id')
-        ->on('category')   // 👈 nombre correcto
-        ->nullOnDelete(); */
-});
-
+            $table->timestamps();
+        });
     }
 
     /**
@@ -49,6 +43,6 @@ Schema::create('tournaments', function (Blueprint $table) {
      */
     public function down(): void
     {
-       Schema::dropIfExists('tournaments');
+        Schema::dropIfExists('tournaments');
     }
 };

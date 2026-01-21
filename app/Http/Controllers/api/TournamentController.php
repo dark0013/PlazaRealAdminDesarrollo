@@ -99,21 +99,34 @@ class TournamentController extends Controller
     /**
      * Registrar participante
      */
-    public function registerParticipant(Request $request, Tournament $tournament)
-    {
-        $request->validate([
-            'sportsman_id' => 'required|integer',
-            'partner_id'   => 'nullable|integer'
-        ]);
+public function registerParticipant(Request $request)
+{
+    $request->validate([
+        'tournament_id' => 'required|integer|exists:tournaments,id',
+        'sportsman_id'  => 'required|integer',
+        'partner_id'    => 'nullable|integer'
+    ]);
 
-        $participant = $this->participantService->register(
-            $tournament,
-            $request->sportsman_id,
-            $request->partner_id
-        );
+    $result = $this->participantService->register([
+        'tournament_id' => (int) $request->tournament_id,
+        'sportsman_id'  => (int) $request->sportsman_id,
+        'partner_id'    => $request->partner_id ? (int) $request->partner_id : null
+    ]);
 
-        return response()->json($participant, 201);
+    if (isset($result['errors'])) {
+        return response()->json([
+            'success' => false,
+            'message' => $result['errors']
+        ], 422);
     }
+
+    return response()->json([
+        'success' => true,
+        'data' => $result
+    ], 201);
+}
+
+
 
     /**
      * Eliminar participante
