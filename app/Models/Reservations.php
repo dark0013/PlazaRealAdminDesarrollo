@@ -14,7 +14,7 @@ class Reservations extends Model
 
     protected $fillable = [
         'scenario_id',
-        'full_name',
+        'id_sportmen',
         'reservation_date',
         'start_time',
         'end_time',

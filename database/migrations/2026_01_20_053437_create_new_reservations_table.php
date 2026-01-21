@@ -14,11 +14,11 @@ return new class extends Migration
         Schema::create('tbl_reservations', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('scenario_id');
-            $table->string("full_name");
+            $table->unsignedBigInteger("id_sportmen");
             $table->date('reservation_date');
             $table->time('start_time');
             $table->time('end_time')->nullable();
-            $table->integer('availability');  
+            $table->string('availability');  
             $table->string('responsable_person')->nullable();
             $table->timestamps();
         });

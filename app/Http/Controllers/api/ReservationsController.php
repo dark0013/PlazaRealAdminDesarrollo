@@ -29,4 +29,31 @@ class ReservationsController
             'data' => $result
         ]);
     }
+
+    public function store(Request $request)
+    {
+ 
+     /*    $request->validate([
+            'scenario_id' => 'required|integer',
+            'id_sportmen' => 'required|integer',
+            'reservation_date' => 'required|date',
+            'start_time' => 'required|date_format:H:i',
+            'end_time' => 'nullable|date_format:H:i|after:start_time',
+            'responsable_person' => 'nullable|string|max:255',
+        ]);  */
+
+        $result = $this->service->createReservation($request->all());
+
+        if (isset($result['errors'])) {
+            return response()->json([
+                'success' => false,
+                'message' => $result['errors']
+            ], 422);
+        }
+
+        return response()->json([
+            'success' => true,
+            'data' => $result
+        ], 201);
+    }
 }
