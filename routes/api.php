@@ -45,6 +45,7 @@ Route::prefix('catalogs')->group(function () {
     Route::get('/categories', [\App\Http\Controllers\Api\CatalogController::class, 'categoriaCatalogs']);
     // Route::get('/categories', [\App\Http\Controllers\Api\CatalogController::class, 'categoriaCatalogs']);
     Route::get('/sports', [\App\Http\Controllers\Api\CatalogController::class, 'getSportCatalogs']);
+    Route::get('/tournaments', [\App\Http\Controllers\Api\CatalogController::class, 'getTournamentCatalogs']);
 
     Route::get('/{id}', [\App\Http\Controllers\Api\CatalogController::class, 'getCatalog']);
     Route::post('/', [\App\Http\Controllers\Api\CatalogController::class, 'createCatalog']);

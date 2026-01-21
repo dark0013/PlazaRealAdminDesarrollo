@@ -88,6 +88,16 @@ class CatalogController extends Controller
         return ResponseHelper::success($sports);
     }
 
+        public function getTournamentCatalogs()
+    {
+        $tournaments = $this->catalogService->getTournamentCatalogs();
+
+         if ($tournaments === null || $tournaments->isEmpty()) {
+            return ResponseHelper::error('No hay torneos registrados', 404);
+        }
+        return ResponseHelper::success($tournaments);
+    }
+
 
 
 

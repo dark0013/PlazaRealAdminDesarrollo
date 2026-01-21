@@ -7,6 +7,7 @@ use App\Models\Role;
 use App\Models\Scenario;
 use App\Models\Sportsman;
 use App\Models\Sport;
+use App\Models\Tournament;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -76,6 +77,15 @@ class CatalogService
             ->get();
 
         return $sports->isEmpty() ? null : $sports;
+    }
+    
+    public function getTournamentCatalogs()
+    {
+        $tournament = Tournament::where('status', 'ACTIVE')
+            ->select('id as value_key', 'name as option_value')
+            ->get();
+
+        return $tournament->isEmpty() ? null : $tournament;
     }
 
 
