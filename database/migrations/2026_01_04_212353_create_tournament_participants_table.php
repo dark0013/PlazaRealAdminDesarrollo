@@ -24,7 +24,7 @@ return new class extends Migration
 
     $table->unique(['tournament_id', 'sportsman_id']);
 
-    $table->foreign('tournament_id')
+   /*  $table->foreign('tournament_id')
         ->references('id')
         ->on('tournaments')
         ->cascadeOnDelete();
@@ -37,7 +37,7 @@ return new class extends Migration
     $table->foreign('partner_id')
         ->references('id')
         ->on('sportsman')
-        ->nullOnDelete();
+        ->nullOnDelete(); */
 });
 
     }

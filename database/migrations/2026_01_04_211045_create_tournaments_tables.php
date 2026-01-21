@@ -33,10 +33,10 @@ Schema::create('tournaments', function (Blueprint $table) {
 
     $table->timestamps();
 
-    $table->foreign('category_id')
+    /* $table->foreign('category_id')
         ->references('id')
         ->on('category')   // 👈 nombre correcto
-        ->nullOnDelete();
+        ->nullOnDelete(); */
 });
 
     }
