@@ -16,6 +16,17 @@ class TournamentService
         return $listTournaments ?: ['errors' => 'No hay torneos registrados'];
     }
 
+    public function getTournamentById(int $id)
+    {
+        $tournament = Tournament::find($id);
+
+        if (!$tournament) {
+            return ['errors' => 'Torneo no encontrado'];
+        }
+
+        return $tournament ?: ['errors' => 'Torneo no encontrado'];
+    }
+
     /**
      * Crear torneo
      */
@@ -26,7 +37,7 @@ class TournamentService
             'start_date' => 'required|date',
             'end_date' => 'nullable|date|after_or_equal:start_date',
             'tournament_type' => 'required|string',
-           // 'mode' => 'required|string',
+            // 'mode' => 'required|string',
             'category_id' => 'required|integer',
             'description' => 'nullable|string'
         ]);

@@ -2,17 +2,15 @@
 
 namespace App\Http\Controllers\api;
 
-
+use App\Helpers\ResponseHelper;
 use App\Http\Controllers\Controller;
 use App\Models\Tournament;
 use App\Models\TournamentMatch;
 use App\Models\TournamentParticipant;
-
-use App\Service\TournamentService;
-use App\Service\TournamentParticipantService;
 use App\Service\TournamentMatchService;
+use App\Service\TournamentParticipantService;
+use App\Service\TournamentService;
 use Illuminate\Http\Request;
-use App\Helpers\ResponseHelper;
 
 class TournamentController extends Controller
 {
@@ -25,15 +23,14 @@ class TournamentController extends Controller
         TournamentParticipantService $participantService,
         TournamentMatchService $matchService
     ) {
-        $this->tournamentService  = $tournamentService;
+        $this->tournamentService = $tournamentService;
         $this->participantService = $participantService;
-        $this->matchService       = $matchService;
+        $this->matchService = $matchService;
     }
 
     /**
      * Listar torneos
      */
-
     public function index()
     {
         $listTournaments = $this->tournamentService->listTournaments();
@@ -43,18 +40,26 @@ class TournamentController extends Controller
         return ResponseHelper::success($listTournaments);
     }
 
+    public function getTournamentById(int $id)
+    {
+        $result = $this->tournamentService->getTournamentById($id);
+
+        if (isset($result['errors'])) {
+            return ResponseHelper::error($result['errors'], 404);
+        }
+
+        return ResponseHelper::success($result);
+    }
+
     /**
      * Crear torneo
      */
     public function store(Request $request)
     {
-       
-
         $tournament = $this->tournamentService->create($request->all());
-         if (isset($tournament['errors'])) {
+        if (isset($tournament['errors'])) {
             return ResponseHelper::error($tournament['errors'], 400);
         }
-
 
         return ResponseHelper::success($tournament, 201);
     }
@@ -92,41 +97,39 @@ class TournamentController extends Controller
 
         return response()->json([
             'message' => 'Torneo finalizado correctamente',
-            'data'    => $tournament
+            'data' => $tournament
         ]);
     }
 
     /**
      * Registrar participante
      */
-public function registerParticipant(Request $request)
-{
-    $request->validate([
-        'tournament_id' => 'required|integer|exists:tournaments,id',
-        'sportsman_id'  => 'required|integer',
-        'partner_id'    => 'nullable|integer'
-    ]);
+    public function registerParticipant(Request $request)
+    {
+        $request->validate([
+            'tournament_id' => 'required|integer|exists:tournaments,id',
+            'sportsman_id' => 'required|integer',
+            'partner_id' => 'nullable|integer'
+        ]);
 
-    $result = $this->participantService->register([
-        'tournament_id' => (int) $request->tournament_id,
-        'sportsman_id'  => (int) $request->sportsman_id,
-        'partner_id'    => $request->partner_id ? (int) $request->partner_id : null
-    ]);
+        $result = $this->participantService->register([
+            'tournament_id' => (int) $request->tournament_id,
+            'sportsman_id' => (int) $request->sportsman_id,
+            'partner_id' => $request->partner_id ? (int) $request->partner_id : null
+        ]);
 
-    if (isset($result['errors'])) {
+        if (isset($result['errors'])) {
+            return response()->json([
+                'success' => false,
+                'message' => $result['errors']
+            ], 422);
+        }
+
         return response()->json([
-            'success' => false,
-            'message' => $result['errors']
-        ], 422);
+            'success' => true,
+            'data' => $result
+        ], 201);
     }
-
-    return response()->json([
-        'success' => true,
-        'data' => $result
-    ], 201);
-}
-
-
 
     /**
      * Eliminar participante
@@ -148,7 +151,7 @@ public function registerParticipant(Request $request)
         $request->validate([
             'player1_id' => 'required|integer',
             'player2_id' => 'required|integer',
-            'round'      => 'required|string',
+            'round' => 'required|string',
             'match_date' => 'required|date',
             'start_time' => 'required'
         ]);
@@ -172,8 +175,8 @@ public function registerParticipant(Request $request)
     {
         $request->validate([
             'winner_id' => 'required|integer',
-            'score'     => 'required|string',
-            'end_time'  => 'nullable'
+            'score' => 'required|string',
+            'end_time' => 'nullable'
         ]);
 
         $match = $this->matchService->registerResult(

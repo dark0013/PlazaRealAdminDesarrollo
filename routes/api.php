@@ -116,6 +116,9 @@ Route::prefix('admin/tournaments')->group(function () {
     Route::put('/{tournament}', [TournamentController::class, 'update']);
     Route::post('/{tournament}/close', [TournamentController::class, 'close']);
 
+    Route::get('/{id}', [TournamentController::class, 'getTournamentById']);
+
+
     Route::post('/participants', [TournamentController::class, 'registerParticipant']);
 
     Route::delete('/participants/{participant}', [TournamentController::class, 'removeParticipant']);
