@@ -46,6 +46,6 @@ Schema::create('tournaments', function (Blueprint $table) {
      */
     public function down(): void
     {
-        Schema::dropIfExists('tournaments_tables');
+       Schema::dropIfExists('tournaments');
     }
 };

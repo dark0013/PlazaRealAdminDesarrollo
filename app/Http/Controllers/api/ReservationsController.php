@@ -32,15 +32,14 @@ class ReservationsController
 
     public function store(Request $request)
     {
- 
-     /*    $request->validate([
-            'scenario_id' => 'required|integer',
-            'id_sportmen' => 'required|integer',
-            'reservation_date' => 'required|date',
-            'start_time' => 'required|date_format:H:i',
-            'end_time' => 'nullable|date_format:H:i|after:start_time',
-            'responsable_person' => 'nullable|string|max:255',
-        ]);  */
+        /*    $request->validate([
+               'scenario_id' => 'required|integer',
+               'id_sportmen' => 'required|integer',
+               'reservation_date' => 'required|date',
+               'start_time' => 'required|date_format:H:i',
+               'end_time' => 'nullable|date_format:H:i|after:start_time',
+               'responsable_person' => 'nullable|string|max:255',
+           ]);  */
 
         $result = $this->service->createReservation($request->all());
 
@@ -55,5 +54,21 @@ class ReservationsController
             'success' => true,
             'data' => $result
         ], 201);
+    }
+
+    public function releaseReservation(Request $request, int $id, string $date)
+    {
+        $result = $this->service->releaseReservationsByScenarioAndDate($id, $date);
+        if (isset($result['errors'])) {
+            return response()->json([
+                'success' => false,
+                'message' => $result['errors']
+            ], 422);
+        }
+
+        return response()->json([
+            'success' => true,
+            'data' => $result
+        ]);
     }
 }

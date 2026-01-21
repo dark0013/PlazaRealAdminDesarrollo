@@ -105,6 +105,7 @@ Route::prefix('reservations')->group(function () {
 Route::prefix('reservationsx')->group(function () {
     Route::get('by-date/{id}/{date}', [ReservationsController::class, 'getReservationsByIdDate']);
     Route::post('/', [ReservationsController::class, 'store']);
+    Route::delete('/{id}/{date}', [ReservationsController::class, 'releaseReservation']);
 });
 
 Route::prefix('admin/tournaments')->group(function () {

@@ -11,46 +11,42 @@ class ReservationsService
 
     /* ===================== CONSULTAS ===================== */
 
-public function getReservationsByIdDate(int $id, string $date)
-{
-    // 1. Traer reservas del escenario y fecha
-    $reservations = Reservations::where('scenario_id', $id)
-        ->whereDate('reservation_date', $date)
-        ->get();
+    public function getReservationsByIdDate(int $id, string $date)
+    {
+        $reservations = Reservations::where('scenario_id', $id)
+            ->whereDate('reservation_date', $date)
+            ->where('availability', 'RESERVADO')  // 🔥 FILTRO CLAVE
+            ->get();
 
-    // 2. Crear mapa por hora (9 - 19)
-    $reservedHours = [];
+        $reservedHours = [];
 
-    foreach ($reservations as $reservation) {
-        $startHour = Carbon::createFromFormat('H:i:s', $reservation->start_time)->hour;
-        $endHour   = Carbon::createFromFormat('H:i:s', $reservation->end_time)->hour;
+        foreach ($reservations as $reservation) {
+            $startHour = Carbon::createFromFormat('H:i:s', $reservation->start_time)->hour;
+            $endHour = Carbon::createFromFormat('H:i:s', $reservation->end_time)->hour;
 
-        for ($h = $startHour; $h < $endHour; $h++) {
-            $reservedHours[$h] = $reservation;
+            for ($h = $startHour; $h < $endHour; $h++) {
+                $reservedHours[$h] = $reservation;
+            }
         }
-    }
 
-    // 3. Generar grilla 09:00 - 19:00
-    $schedule = collect(range(9, 19))->map(function ($hour) use ($reservedHours) {
+        $schedule = collect(range(9, 19))->map(function ($hour) use ($reservedHours) {
+            if (isset($reservedHours[$hour])) {
+                return [
+                    'hour' => sprintf('%02d:00', $hour),
+                    'responsable' => $reservedHours[$hour]->responsable_person,
+                    'disponibilidad' => 'RESERVADO'
+                ];
+            }
 
-        if (isset($reservedHours[$hour])) {
             return [
                 'hour' => sprintf('%02d:00', $hour),
-                'responsable' => $reservedHours[$hour]->responsable_person,
-                'disponibilidad' => 'RESERVADO'
+                'responsable' => null,
+                'disponibilidad' => 'LIBRE'
             ];
-        }
+        });
 
-        return [
-            'hour' => sprintf('%02d:00', $hour),
-            'responsable' => null,
-            'disponibilidad' => 'LIBRE'
-        ];
-    });
-
-    return $schedule;
-}
-
+        return $schedule;
+    }
 
     public function createReservation(array $data)
     {
@@ -99,5 +95,38 @@ public function getReservationsByIdDate(int $id, string $date)
         }
 
         return $reservation;
+    }
+
+    public function releaseReservationsByScenarioAndDate(int $scenarioId, string $date)
+    {
+        $reservations = Reservations::where('scenario_id', $scenarioId)
+            ->whereDate('reservation_date', $date)
+            ->get();
+
+        if ($reservations->isEmpty()) {
+            return ['errors' => 'No existen reservas para ese escenario y fecha'];
+        }
+
+        $updated = false;
+
+        foreach ($reservations as $reservation) {
+            // NULL, vacío o LIBRE → ya está libre
+            if (empty($reservation->availability) || $reservation->availability === 'LIBRE') {
+                continue;
+            }
+
+            $reservation->availability = 'LIBRE';
+            $reservation->save();
+
+            if ($reservation->wasChanged('availability')) {
+                $updated = true;
+            }
+        }
+
+        if (!$updated) {
+            return ['errors' => 'Las reservas ya se encontraban LIBRES'];
+        }
+
+        return $reservations;
     }
 }
