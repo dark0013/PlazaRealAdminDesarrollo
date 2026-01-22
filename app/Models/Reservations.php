@@ -5,7 +5,6 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-
 class Reservations extends Model
 {
     use HasFactory;
@@ -21,4 +20,9 @@ class Reservations extends Model
         'availability',
         'responsable_person',
     ];
+
+    public function sportsman()
+    {
+        return $this->belongsTo(Sportsman::class, 'id_sportmen');  // campo que relaciona la reserva con el deportista
+    }
 }
