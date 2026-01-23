@@ -9,11 +9,24 @@ class TournamentService
 {
     public function listTournaments()
     {
+        $today = Carbon::today();  // Fecha actual
+
+        // Obtenemos todos los torneos ordenados
         $listTournaments = Tournament::orderBy('start_date', 'desc')->get();
-        if (!$listTournaments) {
+
+        if ($listTournaments->isEmpty()) {
             return ['errors' => 'No hay torneos registrados'];
         }
-        return $listTournaments ?: ['errors' => 'No hay torneos registrados'];
+
+        // Recorremos y actualizamos torneos que ya terminaron pero están activos
+        foreach ($listTournaments as $tournament) {
+            if ($tournament->status === 'ACTIVO' && $today->gt(Carbon::parse($tournament->end_date))) {
+                $tournament->status = 'CANCELADO';
+                $tournament->save();
+            }
+        }
+
+        return $listTournaments;
     }
 
     public function getTournamentById(int $id)
@@ -24,7 +37,14 @@ class TournamentService
             return ['errors' => 'Torneo no encontrado'];
         }
 
-        return $tournament ?: ['errors' => 'Torneo no encontrado'];
+        // Verificar si el torneo está activo y ya pasó la fecha de finalización
+        $today = Carbon::today();
+        if ($tournament->status === 'ACTIVO' && $today->gt(Carbon::parse($tournament->end_date))) {
+            $tournament->status = 'CANCELADO';
+            $tournament->save();
+        }
+
+        return $tournament;
     }
 
     /**
@@ -76,7 +96,7 @@ class TournamentService
     public function close(Tournament $tournament): Tournament
     {
         $tournament->update([
-            'status' => 'FINISHED',
+            'status' => 'FINALIZADO',
             'end_date' => Carbon::now()->toDateString()
         ]);
 

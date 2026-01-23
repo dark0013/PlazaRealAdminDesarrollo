@@ -112,12 +112,10 @@ Route::prefix('reservationsx')->group(function () {
 Route::prefix('admin/tournaments')->group(function () {
     Route::get('/', [TournamentController::class, 'index']);
     Route::post('/', [TournamentController::class, 'store']);
-    Route::get('/{tournament}', [TournamentController::class, 'show']);
+    Route::get('/{id}', [TournamentController::class, 'getTournamentById']);
+    Route::get('/by-id/{tournament}', [TournamentController::class, 'show']);
     Route::put('/{tournament}', [TournamentController::class, 'update']);
     Route::post('/{tournament}/close', [TournamentController::class, 'close']);
-
-    Route::get('/{id}', [TournamentController::class, 'getTournamentById']);
-
 
     Route::post('/participants', [TournamentController::class, 'registerParticipant']);
 

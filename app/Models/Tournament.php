@@ -21,6 +21,7 @@ class Tournament extends Model
         'partitioning_amount'
     ];
 
+    
     /* ======================
        RELACIONES
     ====================== */
