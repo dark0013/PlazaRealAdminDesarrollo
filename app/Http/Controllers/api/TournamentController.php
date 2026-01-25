@@ -107,7 +107,7 @@ class TournamentController extends Controller
     public function registerParticipant(Request $request)
     {
         $request->validate([
-            'tournament_id' => 'required|integer|exists:tournaments,id',
+            'tournament_id' => 'required|integer',
             'sportsman_id' => 'required|integer',
             'partner_id' => 'nullable|integer'
         ]);

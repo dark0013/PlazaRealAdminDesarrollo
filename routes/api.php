@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\ReservationController;
 use App\Http\Controllers\Api\ReservationsController;
 use App\Http\Controllers\Api\ResetPasswordController;
 use App\Http\Controllers\Api\RoleController;
+use App\Http\Controllers\Api\NavigationController;
 use App\Http\Controllers\Api\TournamentController;
 use App\Http\Controllers\Api\UserController;
 use Illuminate\Support\Facades\Route;
@@ -124,6 +125,8 @@ Route::prefix('admin/tournaments')->group(function () {
     Route::post('/{tournament}/matches', [TournamentController::class, 'createMatch']);
     Route::post('/matches/{match}/result', [TournamentController::class, 'registerResult']);
 });
+
+Route::get('/navigation', [NavigationController::class, 'index']);
 
 Route::post('/enviar-correo', [MailController::class, 'enviar']);
 Route::post('/resetPassword', [ResetPasswordController::class, 'resetPassword']);

@@ -21,4 +21,14 @@ class Role extends Model
     protected $casts = [
         'status' => 'boolean',
     ];
+
+    public function menus()
+    {
+        return $this->belongsToMany(
+            Menu::class,
+            'menu_rol',
+            'rol_id',
+            'menu_id'
+        );
+    }
 }

@@ -31,6 +31,7 @@ class TournamentParticipantService
      } */
 public function register(array $data)
 {
+    
     // 1️⃣ Obtener torneo
     $tournament = Tournament::find($data['tournament_id']);
 
