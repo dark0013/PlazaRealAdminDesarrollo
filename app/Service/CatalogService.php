@@ -81,7 +81,7 @@ class CatalogService
     
     public function getTournamentCatalogs()
     {
-        $tournament = Tournament::where('status', 'ACTIVE')
+        $tournament = Tournament::where('status', 'ACTIVADO')
             ->select('id as value_key', 'name as option_value')
             ->get();
 
