@@ -69,10 +69,10 @@ class TournamentController extends Controller
      */
     public function show(Tournament $tournament)
     {
-        return response()->json($tournament->load([
-            'participants',
-            'matches'
-        ]));
+
+         $tournament = $this->tournamentService->findByIdWithParticipantsAndMatches($tournament->id);
+
+    return $tournament;
     }
 
     /**

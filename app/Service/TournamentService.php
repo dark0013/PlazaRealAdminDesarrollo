@@ -2,8 +2,11 @@
 namespace App\Service;
 
 use App\Models\Tournament;
+
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
+
 
 class TournamentService
 {
@@ -111,4 +114,76 @@ class TournamentService
 
         return $tournament;
     }
+
+
+        public function findByIdWithParticipantsAndMatches(int $tournamentId)
+  {
+    // 1️⃣ Torneo
+    $tournament = DB::table('tournaments')
+        ->where('id', $tournamentId)
+        ->first();
+
+    if (!$tournament) {
+        abort(404, 'Tournament not found');
+    }
+
+    // 2️⃣ Participantes con nombres
+    $participants = DB::table('tournament_participants as tp')
+        ->leftJoin('sportsman as s1', 's1.id', '=', 'tp.sportsman_id')
+        ->leftJoin('sportsman as s2', 's2.id', '=', 'tp.partner_id')
+        ->where('tp.tournament_id', $tournamentId)
+        ->select([
+            'tp.id',
+            'tp.tournament_id',
+            'tp.sportsman_id',
+            'tp.partner_id',
+            'tp.created_at',
+            'tp.updated_at',
+
+            's1.name as sportsman_name',
+            's1.surname as sportsman_surname',
+
+            's2.name as partner_name',
+            's2.surname as partner_surname',
+        ])
+        ->get();
+
+    // 3️⃣ Matches
+    $matches = DB::table('tournament_matches')
+        ->where('tournament_id', $tournamentId)
+        ->get();
+
+    // 4️⃣ CÁLCULOS IMPORTANTES
+    $totalParticipants = $participants->count();
+
+    $availableSlots = max(
+        0,
+        $tournament->partitioning_amount - $totalParticipants
+    );
+
+    // 5️⃣ RESPUESTA FINAL FORMATEADA
+    return [
+        'id' => $tournament->id,
+        'name' => $tournament->name,
+        'start_date' => $tournament->start_date,
+        'end_date' => $tournament->end_date,
+        'tournament_type' => $tournament->tournament_type,
+        'mode' => $tournament->mode,
+        'category_id' => $tournament->category_id,
+        'status' => $tournament->status,
+        'description' => $tournament->description,
+        'isTeam' => $tournament->isTeam,
+        'partitioning_amount' => $tournament->partitioning_amount,
+
+        // 🔥 NUEVOS CAMPOS
+        'total_participants' => $totalParticipants,
+        'available_slots' => $availableSlots,
+
+        'created_at' => $tournament->created_at,
+        'updated_at' => $tournament->updated_at,
+        'participants' => $participants,
+        'matches' => $matches
+    ];
+}
+
 }
