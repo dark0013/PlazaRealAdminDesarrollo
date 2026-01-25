@@ -27,7 +27,7 @@ return new class extends Migration {
             $table->unsignedBigInteger('category_id')->nullable();
 
             // PENDING | ACTIVE | FINISHED | CANCELLED
-            $table->string('status', 20)->default('PENDING');
+            $table->string('status', 20)->default('PENDIENTE');
 
             $table->text('description')->nullable();
 

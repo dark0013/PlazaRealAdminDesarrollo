@@ -74,7 +74,7 @@ class TournamentService
             'mode' => $data['mode'],
             'category_id' => $data['category_id'],
             'description' => $data['description'] ?? null,
-            'status' => 'ACTIVE',
+            'status' => 'ACTIVADO',
             'isTeam' => $data['isTeam'],
             'partitioning_amount' => $data['partitioning_amount']
         ]);
@@ -98,6 +98,15 @@ class TournamentService
         $tournament->update([
             'status' => 'FINALIZADO',
             'end_date' => Carbon::now()->toDateString()
+        ]);
+
+        return $tournament;
+    }
+
+    public function reactivateTournament(Tournament $tournament): Tournament
+    {
+        $tournament->update([
+            'status' => 'ACTIVADO'
         ]);
 
         return $tournament;

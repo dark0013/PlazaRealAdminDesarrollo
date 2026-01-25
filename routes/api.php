@@ -117,6 +117,7 @@ Route::prefix('admin/tournaments')->group(function () {
     Route::get('/by-id/{tournament}', [TournamentController::class, 'show']);
     Route::put('/{tournament}', [TournamentController::class, 'update']);
     Route::post('/{tournament}/close', [TournamentController::class, 'close']);
+    Route::post('/{tournament}/reactivate', [TournamentController::class, 'reactivateTournament']);
 
     Route::post('/participants', [TournamentController::class, 'registerParticipant']);
 

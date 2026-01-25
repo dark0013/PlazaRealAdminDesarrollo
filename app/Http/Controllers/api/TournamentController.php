@@ -100,6 +100,15 @@ class TournamentController extends Controller
             'data' => $tournament
         ]);
     }
+    public function reactivateTournament(Tournament $tournament)
+    {
+        $tournament = $this->tournamentService->reactivateTournament($tournament);
+
+        return response()->json([
+            'message' => 'Torneo reactivado correctamente',
+            'data' => $tournament
+        ]);
+    }
 
     /**
      * Registrar participante
