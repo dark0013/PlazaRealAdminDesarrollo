@@ -132,6 +132,7 @@ Route::prefix('ramas')->group(function () {
     Route::post('{id}/generate-matches', [TournamentBracketController::class, 'generateInitialMatches']);
     /* Route::get('{id}/bracket', [TournamentBracketController::class, 'show']); */
     Route::get('{id}/brackets', [TournamentBracketController::class, 'showBracket']);
+    Route::post('{id}/confirm-matches', [TournamentBracketController::class, 'confirmMatches']);
     Route::post('matches/{id}/record', [TournamentBracketController::class, 'recordMatchResult']);
 
 });

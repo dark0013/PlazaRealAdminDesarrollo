@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\api;
 
+use App\Helpers\ResponseHelper;
 use App\Http\Controllers\Controller;
 use App\Models\Tournament;
 use App\Models\TournamentMatchs;
@@ -23,9 +24,11 @@ class TournamentBracketController extends Controller
     public function generateInitialMatches($tournamentId)
     {
         $tournament = Tournament::with('participants')->findOrFail($tournamentId);
-        $this->bracketService->generateInitialMatches($tournament);
-
-        return response()->json(['message' => 'Encuentros iniciales generados']);
+        $result = $this->bracketService->generateInitialMatches($tournament);
+        if (isset($result['errors'])) {
+            return ResponseHelper::error($result['errors'], 400);
+        }
+        return ResponseHelper::success($result, 'Encuentros iniciales generados', 201);
     }
 
     /**
@@ -61,6 +64,22 @@ class TournamentBracketController extends Controller
 
         $bracket = $this->bracketService->getBracketWithTeams($tournament);
 
-        return response()->json($bracket);
+        if (empty($bracket)) {
+            return ResponseHelper::error('No hay rondas disponibles', 404);
+        }
+
+        return ResponseHelper::success($bracket);
+    }
+
+    public function confirmMatches($tournamentId)
+    {
+        $tournament = Tournament::findOrFail($tournamentId);
+
+        $updatedCount = $this->bracketService->confirmMatches($tournament->id);
+
+        if (isset($updatedCount['errors'])) {
+            return ResponseHelper::error($updatedCount['errors'], 400);
+        }
+        return ResponseHelper::success($updatedCount, 'Eatches confirmados correctamente.', 201);
     }
 }
