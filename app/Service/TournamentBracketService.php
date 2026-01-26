@@ -17,7 +17,15 @@ class TournamentBracketService
     public function generateInitialMatches(Tournament $tournament)
     {
         if ($tournament->status == 1) {
-            throw new \Exception('Los matches ya fueron confirmados y no se pueden sobreescribir.');
+            return ['errors' => 'Los matches de este torneo ya fueron confirmados y no se pueden generar nuevos.'];
+        }
+
+        $confirmedExists = TournamentMatchs::where('tournament_id', $tournament->id)
+            ->where('status', 1)
+            ->exists();
+
+        if ($confirmedExists) {
+            return ['errors' => 'Los matches de este torneo ya fueron confirmados y no se pueden generar nuevos.'];
         }
 
         // Traer solo participantes de este torneo
@@ -25,7 +33,7 @@ class TournamentBracketService
         $totalParticipants = $tournament->partitioning_amount;
 
         if (!$this->isPowerOfTwo($totalParticipants)) {
-            throw new \Exception('La cantidad de participantes debe ser potencia de 2.');
+            return ['errors' => 'La cantidad de participantes debe ser potencia de 2.'];
         }
 
         // Borrar matches existentes de este torneo mientras status = 0
@@ -186,9 +194,7 @@ class TournamentBracketService
         return $bracket;
     }
 
-
-
-      public function confirmMatches(int $tournamentId): int
+    public function confirmMatches(int $tournamentId): int
     {
         // Actualiza todos los matches de este torneo
         $updated = TournamentMatchs::where('tournament_id', $tournamentId)

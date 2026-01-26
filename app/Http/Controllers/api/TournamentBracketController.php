@@ -80,6 +80,6 @@ class TournamentBracketController extends Controller
         if (isset($updatedCount['errors'])) {
             return ResponseHelper::error($updatedCount['errors'], 400);
         }
-        return ResponseHelper::success($updatedCount, 'Eatches confirmados correctamente.', 201);
+        return ResponseHelper::success($updatedCount, 'Matches confirmados correctamente.', 201);
     }
 }
