@@ -54,4 +54,13 @@ class TournamentBracketController extends Controller
 
         return response()->json(['message' => 'Resultado registrado correctamente']);
     }
+
+    public function showBracket($tournamentId)
+    {
+        $tournament = Tournament::findOrFail($tournamentId);
+
+        $bracket = $this->bracketService->getBracketWithTeams($tournament);
+
+        return response()->json($bracket);
+    }
 }

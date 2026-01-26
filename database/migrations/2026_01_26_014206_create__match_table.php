@@ -18,7 +18,8 @@ return new class extends Migration {
 
             $table->unsignedBigInteger('winner_id')->nullable();
             $table->unsignedBigInteger('loser_id')->nullable();
-            $table->integer('round');  // Ronda del torneo
+            $table->integer('round'); 
+            $table->integer('status')->default(0); // 0: pendiente, 1: completado
             $table->timestamps();
 
             $table->foreign('tournament_id')->references('id')->on('tournaments')->onDelete('cascade');

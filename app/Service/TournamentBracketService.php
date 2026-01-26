@@ -8,48 +8,63 @@ use Illuminate\Support\Facades\DB;
 
 class TournamentBracketService
 {
-    /**
-     * Genera automáticamente los encuentros iniciales de un torneo.
-     * Si ya existen encuentros, no hace nada.
+     /**
+     * Genera todos los matches iniciales y placeholders según el torneo
      *
      * @param Tournament $tournament
-     * @return void
+     * @throws \Exception
      */
-    public function generateInitialMatches(Tournament $tournament)
-    {
-        if ($tournament->matches()->exists()) {
-            return; // Ya existen encuentros
-        }
-
-        // Mezclar aleatoriamente participantes
-        $participants = $tournament->participants->shuffle()->values();
-        $round = 1;
-
-        // Crear matches iniciales: cada par de participantes
-        for ($i = 0; $i < $participants->count(); $i += 2) {
-            TournamentMatchs::create([
-                'tournament_id' => $tournament->id,
-                'round' => $round,
-                'player1_id' => $participants[$i]->id,
-                'player2_id' => $participants[$i + 1]->id,
-            ]);
-        }
-
-        // Generar automáticamente las rondas futuras vacías
-        $this->generateFutureRounds($tournament, $round);
+public function generateInitialMatches(Tournament $tournament)
+{
+    if ($tournament->status == 1) {
+        throw new \Exception('Los matches ya fueron confirmados y no se pueden sobreescribir.');
     }
 
+    // Traer solo participantes de este torneo
+    $participants = $tournament->participants()->get()->shuffle()->values();
+    $totalParticipants = $tournament->partitioning_amount;
+
+    if (!$this->isPowerOfTwo($totalParticipants)) {
+        throw new \Exception('La cantidad de participantes debe ser potencia de 2.');
+    }
+
+    // Borrar matches existentes de este torneo mientras status = 0
+    TournamentMatchs::where('tournament_id', $tournament->id)
+        ->where('status', 0)
+        ->delete();
+
+    $round = 1;
+
+    // Creamos los matches iniciales usando id de tournament_participants
+    for ($i = 0; $i < $participants->count(); $i += 2) {
+        TournamentMatchs::create([
+            'tournament_id' => $tournament->id,
+            'round' => $round,
+            'player1_id' => $participants[$i]->id,          // <--- id de tournament_participants
+            'player2_id' => $participants[$i + 1]->id ?? null, // <--- id de tournament_participants
+            'status' => 0
+        ]);
+    }
+
+    // Generar placeholders para rondas futuras
+    $this->generateFutureRounds($tournament, $round);
+}
+
+
+
+
+
+
+
     /**
-     * Genera todas las rondas futuras en blanco según la cantidad de participantes (n^2)
-     * Esto permite que el frontend pueda dibujar el bracket completo desde el inicio.
+     * Genera rondas futuras vacías según partitioning_amount
      *
      * @param Tournament $tournament
      * @param int $startRound
-     * @return void
      */
-    public function generateFutureRounds(Tournament $tournament, int $startRound)
+    private function generateFutureRounds(Tournament $tournament, int $startRound)
     {
-        $totalParticipants = $tournament->participants->count();
+        $totalParticipants = $tournament->partitioning_amount; // usamos partitioning_amount
         $totalRounds = (int) log($totalParticipants, 2);
 
         for ($round = $startRound + 1; $round <= $totalRounds; $round++) {
@@ -61,95 +76,120 @@ class TournamentBracketService
                     'round' => $round,
                     'player1_id' => null,
                     'player2_id' => null,
+                    'status' => 0
                 ]);
             }
         }
     }
 
     /**
-     * Registra el ganador de un match y actualiza automáticamente el siguiente match
-     *
-     * @param TournamentMatchs $match
-     * @param int $winnerId
-     * @return void
+     * Verifica si un número es potencia de 2
+     */
+   /*  private function isPowerOfTwo(int $n): bool
+    {
+        return $n > 0 && (($n & ($n - 1)) === 0);
+    }
+ */
+
+    /**
+     * Registra el ganador de un match
      */
     public function recordMatchResult(TournamentMatchs $match, int $winnerId)
     {
-        if (!in_array($winnerId, [$match->player1_id, $match->player2_id])) {
-            throw new \Exception('Jugador inválido para este match');
+        if ($match->status == 1) {
+            throw new \Exception('Este match ya fue completado.');
         }
 
-        DB::transaction(function () use ($match, $winnerId) {
-            $match->winner_id = $winnerId;
-            $match->loser_id = $match->player1_id == $winnerId ? $match->player2_id : $match->player1_id;
-            $match->save();
+        $match->winner_id = $winnerId;
+        $match->loser_id = ($match->player1_id == $winnerId) ? $match->player2_id : $match->player1_id;
+        $match->status = 1;
+        $match->save();
 
-            // Actualizar siguiente ronda si existe
-            $this->updateNextRound($match);
-        });
+        $this->assignWinnerToNextRound($match);
     }
 
     /**
-     * Actualiza el siguiente match con los ganadores de la ronda actual
-     *
-     * @param TournamentMatchs $match
-     * @return void
+     * Asigna el ganador al match de la siguiente ronda
      */
-    protected function updateNextRound(TournamentMatchs $match)
+    private function assignWinnerToNextRound(TournamentMatchs $match)
     {
-        $tournament = $match->tournament;
-        $currentRound = $match->round;
-        $nextRound = $currentRound + 1;
+        $nextRound = $match->round + 1;
 
-        // Traer matches de la ronda siguiente que todavía no tienen jugadores
-        $nextRoundMatches = $tournament->matches()
+        $nextMatch = TournamentMatchs::where('tournament_id', $match->tournament_id)
             ->where('round', $nextRound)
-            ->whereNull('player1_id')
-            ->orWhereNull('player2_id')
-            ->orderBy('id')
-            ->get();
+            ->where(function ($q) {
+                $q->whereNull('player1_id')->orWhereNull('player2_id');
+            })
+            ->first();
 
-        // Tomar ganadores de la ronda actual
-        $currentRoundWinners = $tournament->matches()
-            ->where('round', $currentRound)
-            ->whereNotNull('winner_id')
-            ->pluck('winner_id')
-            ->all();
-
-        // Asignar ganadores de a pares a los matches de la siguiente ronda
-        $index = 0;
-        foreach ($nextRoundMatches as $nextMatch) {
-            if ($index < count($currentRoundWinners)) {
-                if (!$nextMatch->player1_id) {
-                    $nextMatch->player1_id = $currentRoundWinners[$index++];
-                }
-                if ($index < count($currentRoundWinners) && !$nextMatch->player2_id) {
-                    $nextMatch->player2_id = $currentRoundWinners[$index++];
-                }
-                $nextMatch->save();
+        if ($nextMatch) {
+            if (is_null($nextMatch->player1_id)) {
+                $nextMatch->player1_id = $match->winner_id;
+            } else {
+                $nextMatch->player2_id = $match->winner_id;
             }
+            $nextMatch->save();
         }
     }
 
-    /**
-     * Retorna todos los matches agrupados por ronda para mostrar el bracket
-     *
-     * @param Tournament $tournament
-     * @return array
-     */
-    public function getBracket(Tournament $tournament)
+    private function isPowerOfTwo(int $number): bool
     {
-        $tournament->load(['matches.player1', 'matches.player2', 'matches.winner']);
-
-        return $tournament->matches->groupBy('round')->map(function ($round) {
-            return $round->map(function ($match) {
-                return [
-                    'id' => $match->id,
-                    'player1' => $match->player1 ? ['id' => $match->player1->id, 'name' => $match->player1->name] : null,
-                    'player2' => $match->player2 ? ['id' => $match->player2->id, 'name' => $match->player2->name] : null,
-                    'winner' => $match->winner ? ['id' => $match->winner->id, 'name' => $match->winner->name] : null,
-                ];
-            });
-        })->toArray();
+        return ($number != 0) && (($number & ($number - 1)) === 0);
     }
+
+ public function getBracketWithTeams(Tournament $tournament)
+{
+    $tournamentId = $tournament->id;
+
+    // SELECT con JOIN para traer los teamName desde tournament_participants
+    $matches = DB::table('matches as m')
+        ->leftJoin('tournament_participants as p1', function ($join) use ($tournamentId) {
+            $join
+                ->on('m.player1_id', '=', 'p1.id')       // <-- Ahora usamos el ID de tournament_participants
+                ->where('p1.tournament_id', $tournamentId);
+        })
+        ->leftJoin('tournament_participants as p2', function ($join) use ($tournamentId) {
+            $join
+                ->on('m.player2_id', '=', 'p2.id')       // <-- Igual aquí
+                ->where('p2.tournament_id', $tournamentId);
+        })
+        ->leftJoin('tournament_participants as w', function ($join) use ($tournamentId) {
+            $join
+                ->on('m.winner_id', '=', 'w.id')         // <-- winner_id también apunta a tournament_participants.id
+                ->where('w.tournament_id', $tournamentId);
+        })
+        ->leftJoin('tournament_participants as l', function ($join) use ($tournamentId) {
+            $join
+                ->on('m.loser_id', '=', 'l.id')          // <-- loser_id igual
+                ->where('l.tournament_id', $tournamentId);
+        })
+        ->select(
+            'm.id as match_id',
+            'm.round',
+            'p1.teamName as player1_team',
+            'p2.teamName as player2_team',
+            'w.teamName as winner_team',
+            'l.teamName as loser_team',
+            'm.status'
+        )
+        ->where('m.tournament_id', $tournamentId)
+        ->orderBy('m.round')
+        ->get();
+
+    // Agrupar por ronda
+    $bracket = [
+        'tournament' => $tournament->name,
+        'rounds' => []
+    ];
+
+    foreach ($matches->groupBy('round') as $roundNumber => $roundMatches) {
+        $bracket['rounds'][] = [
+            'round' => $roundNumber,
+            'matches' => $roundMatches
+        ];
+    }
+
+    return $bracket;
+}
+
 }
