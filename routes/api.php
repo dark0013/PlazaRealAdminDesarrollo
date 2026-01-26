@@ -11,6 +11,7 @@ use App\Http\Controllers\Api\RoleController;
 use App\Http\Controllers\Api\NavigationController;
 use App\Http\Controllers\Api\TournamentController;
 use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\Api\TournamentBracketController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('users')->group(function () {
@@ -125,6 +126,12 @@ Route::prefix('admin/tournaments')->group(function () {
 
     Route::post('/{tournament}/matches', [TournamentController::class, 'createMatch']);
     Route::post('/matches/{match}/result', [TournamentController::class, 'registerResult']);
+});
+
+Route::prefix('ramas')->group(function () {
+    Route::post('{id}/generate-matches', [TournamentBracketController::class, 'generateInitialMatches']);
+    Route::get('{id}/bracket', [TournamentBracketController::class, 'show']);
+    Route::post('matches/{id}/record', [TournamentBracketController::class, 'recordMatchResult']);
 });
 
 Route::get('/navigation', [NavigationController::class, 'index']);
