@@ -201,138 +201,174 @@ class TournamentBracketService
      * Solo lectura, no altera la base de datos.
      */
     // En TournamentBracketService
-public function getNextRoundVersus(Tournament $tournament)
-{
-    $tournamentId = $tournament->id;
+    public function getNextRoundVersus(Tournament $tournament)
+    {
+        $tournamentId = $tournament->id;
 
-    // 1️⃣ Obtener todas las rondas del torneo
-    $rounds = DB::table('matches')
-        ->where('tournament_id', $tournamentId)
-        ->select('round')
-        ->distinct()
-        ->orderBy('round')
-        ->pluck('round')
-        ->all();
-
-    // 2️⃣ Encontrar la ÚLTIMA ronda COMPLETA
-    $baseRound = null;
-
-    foreach ($rounds as $round) {
-        $matches = DB::table('matches')
+        /*
+         * |--------------------------------------------------------------------------
+         * | 1️⃣ Obtener todas las rondas existentes del torneo
+         * |--------------------------------------------------------------------------
+         */
+        $rounds = DB::table('matches')
             ->where('tournament_id', $tournamentId)
-            ->where('round', $round)
+            ->select('round')
+            ->distinct()
+            ->orderBy('round')
+            ->pluck('round')
+            ->all();
+
+        /*
+         * |--------------------------------------------------------------------------
+         * | 2️⃣ Detectar la ÚLTIMA ronda completamente jugada
+         * |--------------------------------------------------------------------------
+         */
+        $baseRound = null;
+
+        foreach ($rounds as $round) {
+            $matches = DB::table('matches')
+                ->where('tournament_id', $tournamentId)
+                ->where('round', $round)
+                ->get();
+
+            if ($matches->every(fn($m) => $m->winner_id !== null)) {
+                $baseRound = $round;
+            } else {
+                break;
+            }
+        }
+
+        if ($baseRound === null) {
+            return [
+                'tournament' => $tournament->name,
+                'message' => 'Aún no hay resultados registrados'
+            ];
+        }
+
+        $nextRound = $baseRound + 1;
+
+        /*
+         * |--------------------------------------------------------------------------
+         * | 3️⃣ Obtener ganadores de la ronda base
+         * |--------------------------------------------------------------------------
+         */
+        $winners = DB::table('matches')
+            ->where('tournament_id', $tournamentId)
+            ->where('round', $baseRound)
+            ->pluck('winner_id')
+            ->values()
+            ->all();
+
+        /*
+         * |--------------------------------------------------------------------------
+         * | 🏆 Final del torneo
+         * |--------------------------------------------------------------------------
+         */
+        if (count($winners) === 1) {
+            return [
+                'tournament' => $tournament->name,
+                'winner' => $this->getTeamNameByParticipantId($winners[0])
+            ];
+        }
+
+        /*
+         * |--------------------------------------------------------------------------
+         * | 4️⃣ Obtener matches de la siguiente ronda
+         * |--------------------------------------------------------------------------
+         */
+        $nextRoundMatches = DB::table('matches')
+            ->where('tournament_id', $tournamentId)
+            ->where('round', $nextRound)
+            ->orderBy('id')
             ->get();
 
-        if ($matches->every(fn ($m) => $m->winner_id !== null)) {
-            $baseRound = $round;
-        } else {
-            break; // en cuanto una ronda no esté completa, paramos
+        /*
+         * |--------------------------------------------------------------------------
+         * | 5️⃣ Si la siguiente ronda ya tiene jugadores → devolverla formateada
+         * |--------------------------------------------------------------------------
+         */
+        $hasPlayers = $nextRoundMatches->contains(fn($m) =>
+            $m->player1_id !== null || $m->player2_id !== null);
+
+        if ($hasPlayers) {
+            return [
+                'tournament' => $tournament->name,
+                'next_round' => [
+                    'round' => $nextRound,
+                    'matches' => $this->formatMatches($nextRoundMatches)
+                ]
+            ];
         }
-    }
 
-    // ⛔ No hay ninguna ronda completa aún
-    if ($baseRound === null) {
-        return [
-            'tournament' => $tournament->name,
-            'message' => 'Aún no hay resultados registrados'
-        ];
-    }
+        /*
+         * |--------------------------------------------------------------------------
+         * | 6️⃣ Rellenar la siguiente ronda con los ganadores
+         * |--------------------------------------------------------------------------
+         */
+        $index = 0;
 
-    $nextRound = $baseRound + 1;
+        foreach ($nextRoundMatches as $match) {
+            if (!isset($winners[$index])) {
+                break;
+            }
 
-    // 3️⃣ Obtener ganadores de la ronda base
-    $winners = DB::table('matches')
-        ->where('tournament_id', $tournamentId)
-        ->where('round', $baseRound)
-        ->pluck('winner_id')
-        ->values()
-        ->all();
+            DB::table('matches')
+                ->where('id', $match->id)
+                ->update([
+                    'player1_id' => $winners[$index],
+                    'player2_id' => $winners[$index + 1] ?? null,
+                    'status' => 0,
+                    'updated_at' => now(),
+                ]);
 
-    // 🏆 Si solo queda uno, torneo finalizado
-    if (count($winners) === 1) {
-        return [
-            'tournament' => $tournament->name,
-            'winner' => $this->getTeamNameByParticipantId($winners[0])
-        ];
-    }
+            $index += 2;
+        }
 
-    // 4️⃣ Matches de la siguiente ronda
-    $nextRoundMatches = DB::table('matches')
-        ->where('tournament_id', $tournamentId)
-        ->where('round', $nextRound)
-        ->orderBy('id')
-        ->get();
+        /*
+         * |--------------------------------------------------------------------------
+         * | 7️⃣ Volver a traer y devolver la ronda ya generada (formateada)
+         * |--------------------------------------------------------------------------
+         */
+        $updatedMatches = DB::table('matches')
+            ->where('tournament_id', $tournamentId)
+            ->where('round', $nextRound)
+            ->orderBy('id')
+            ->get();
 
-    // 5️⃣ Si la siguiente ronda ya tiene jugadores, devolverla
-    $hasPlayers = $nextRoundMatches->contains(fn ($m) =>
-        $m->player1_id !== null || $m->player2_id !== null
-    );
-
-    if ($hasPlayers) {
         return [
             'tournament' => $tournament->name,
             'next_round' => [
                 'round' => $nextRound,
-                'matches' => $nextRoundMatches
+                'matches' => $this->formatMatches($updatedMatches)
             ]
         ];
     }
 
-    // 6️⃣ Rellenar la siguiente ronda con ganadores
-    $index = 0;
-
-    foreach ($nextRoundMatches as $match) {
-
-        if (!isset($winners[$index])) break;
-
-        DB::table('matches')
-            ->where('id', $match->id)
-            ->update([
-                'player1_id' => $winners[$index],
-                'player2_id' => $winners[$index + 1] ?? null,
-                'status' => 0,
-                'updated_at' => now(),
-            ]);
-
-        $index += 2;
+    private function formatMatches($matches)
+    {
+        return $matches->map(function ($m) {
+            return [
+                'match_id' => $m->id,
+                'round' => $m->round,
+                'player1' => $this->getTeamNameByParticipantId($m->player1_id),
+                'player2' => $this->getTeamNameByParticipantId($m->player2_id),
+                'winner' => $this->getTeamNameByParticipantId($m->winner_id),
+                'status' => $m->status,
+            ];
+        });
     }
-
-    // 7️⃣ Devolver ronda ya generada
-    $updated = DB::table('matches')
-        ->where('tournament_id', $tournamentId)
-        ->where('round', $nextRound)
-        ->orderBy('id')
-        ->get();
-
-    return [
-        'tournament' => $tournament->name,
-        'next_round' => [
-            'round' => $nextRound,
-            'matches' => $updated
-        ]
-    ];
-}
-
-
 
     /**
      * Helper para obtener el teamName o el nombre completo del deportista
      */
     private function getTeamNameByParticipantId($participantId)
-    {
-        if (!$participantId)
+    {    
+        if (!$participantId) {
             return null;
+        }
 
-        $participant = DB::table('tournament_participants')->where('id', $participantId)->first();
-
-        return $participant;
-        if (!$participant)
-            return null;
-
-        if ($participant->teamName)
-            return $participant->teamName;
-
-        $sportsman = DB::table('sportsman')->where('id', $participant->sportsman_id)->first();
-        return $sportsman ? $sportsman->name . ' ' . $sportsman->surname : null;
+        return DB::table('tournament_participants')
+            ->where('id', $participantId)
+            ->value('teamName');
     }
 }
