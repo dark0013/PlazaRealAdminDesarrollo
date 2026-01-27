@@ -136,7 +136,7 @@ class TournamentService
                 'tp.partner_id',
                 'tp.created_at',
                 'tp.updated_at',
-                'tp.teamName as team_name ',
+                'tp.teamName as team_name',
                 's1.name as sportsman_name',
                 's1.surname as sportsman_surname',
                 's2.name as partner_name',
