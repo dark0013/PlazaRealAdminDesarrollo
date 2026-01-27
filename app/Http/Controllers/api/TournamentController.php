@@ -69,10 +69,9 @@ class TournamentController extends Controller
      */
     public function show(Tournament $tournament)
     {
+        $tournament = $this->tournamentService->findByIdWithParticipantsAndMatches($tournament->id);
 
-         $tournament = $this->tournamentService->findByIdWithParticipantsAndMatches($tournament->id);
-
-    return $tournament;
+        return $tournament;
     }
 
     /**
@@ -100,6 +99,7 @@ class TournamentController extends Controller
             'data' => $tournament
         ]);
     }
+
     public function reactivateTournament(Tournament $tournament)
     {
         $tournament = $this->tournamentService->reactivateTournament($tournament);
@@ -118,13 +118,15 @@ class TournamentController extends Controller
         $request->validate([
             'tournament_id' => 'required|integer',
             'sportsman_id' => 'required|integer',
-            'partner_id' => 'nullable|integer'
+            'partner_id' => 'nullable|integer',
+            'teamName' => 'required|string'
         ]);
 
         $result = $this->participantService->register([
             'tournament_id' => (int) $request->tournament_id,
             'sportsman_id' => (int) $request->sportsman_id,
-            'partner_id' => $request->partner_id ? (int) $request->partner_id : null
+            'partner_id' => $request->partner_id ? (int) $request->partner_id : null,
+            'teamName' => $request->teamName,
         ]);
 
         if (isset($result['errors'])) {

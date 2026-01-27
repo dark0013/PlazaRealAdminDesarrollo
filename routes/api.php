@@ -3,15 +3,15 @@
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\CatalogController;
 use App\Http\Controllers\Api\MailController;
+use App\Http\Controllers\Api\NavigationController;
 use App\Http\Controllers\Api\PermissionController;
 use App\Http\Controllers\Api\ReservationController;
 use App\Http\Controllers\Api\ReservationsController;
 use App\Http\Controllers\Api\ResetPasswordController;
 use App\Http\Controllers\Api\RoleController;
-use App\Http\Controllers\Api\NavigationController;
+use App\Http\Controllers\Api\TournamentBracketController;
 use App\Http\Controllers\Api\TournamentController;
 use App\Http\Controllers\Api\UserController;
-use App\Http\Controllers\Api\TournamentBracketController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('users')->group(function () {
@@ -135,6 +135,7 @@ Route::prefix('ramas')->group(function () {
     Route::post('{id}/confirm-matches', [TournamentBracketController::class, 'confirmMatches']);
     Route::post('matches/{id}/record', [TournamentBracketController::class, 'recordMatchResult']);
 
+    Route::get('tournaments/{id}/next-round-versus', [TournamentBracketController::class, 'nextRoundVersus']);
 });
 
 Route::get('/navigation', [NavigationController::class, 'index']);

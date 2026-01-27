@@ -82,4 +82,13 @@ class TournamentBracketController extends Controller
         }
         return ResponseHelper::success($updatedCount, 'Matches confirmados correctamente.', 201);
     }
+
+    public function nextRoundVersus($tournamentId)
+    {
+        $tournament = Tournament::findOrFail($tournamentId);
+
+        $data = $this->bracketService->getNextRoundVersus($tournament);
+
+        return response()->json($data);
+    }
 }

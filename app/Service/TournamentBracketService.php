@@ -86,13 +86,6 @@ class TournamentBracketService
 
     /** Verifica si un número es potencia de 2 */
 
-    /*
-     * private function isPowerOfTwo(int $n): bool
-     * {
-     *     return $n > 0 && (($n & ($n - 1)) === 0);
-     * }
-     */
-
     /**
      * Registra el ganador de un match
      */
@@ -201,5 +194,145 @@ class TournamentBracketService
             ->update(['status' => 1]);
 
         return $updated;
+    }
+
+    /**
+     * Devuelve los enfrentamientos de la siguiente ronda según los resultados actuales.
+     * Solo lectura, no altera la base de datos.
+     */
+    // En TournamentBracketService
+public function getNextRoundVersus(Tournament $tournament)
+{
+    $tournamentId = $tournament->id;
+
+    // 1️⃣ Obtener todas las rondas del torneo
+    $rounds = DB::table('matches')
+        ->where('tournament_id', $tournamentId)
+        ->select('round')
+        ->distinct()
+        ->orderBy('round')
+        ->pluck('round')
+        ->all();
+
+    // 2️⃣ Encontrar la ÚLTIMA ronda COMPLETA
+    $baseRound = null;
+
+    foreach ($rounds as $round) {
+        $matches = DB::table('matches')
+            ->where('tournament_id', $tournamentId)
+            ->where('round', $round)
+            ->get();
+
+        if ($matches->every(fn ($m) => $m->winner_id !== null)) {
+            $baseRound = $round;
+        } else {
+            break; // en cuanto una ronda no esté completa, paramos
+        }
+    }
+
+    // ⛔ No hay ninguna ronda completa aún
+    if ($baseRound === null) {
+        return [
+            'tournament' => $tournament->name,
+            'message' => 'Aún no hay resultados registrados'
+        ];
+    }
+
+    $nextRound = $baseRound + 1;
+
+    // 3️⃣ Obtener ganadores de la ronda base
+    $winners = DB::table('matches')
+        ->where('tournament_id', $tournamentId)
+        ->where('round', $baseRound)
+        ->pluck('winner_id')
+        ->values()
+        ->all();
+
+    // 🏆 Si solo queda uno, torneo finalizado
+    if (count($winners) === 1) {
+        return [
+            'tournament' => $tournament->name,
+            'winner' => $this->getTeamNameByParticipantId($winners[0])
+        ];
+    }
+
+    // 4️⃣ Matches de la siguiente ronda
+    $nextRoundMatches = DB::table('matches')
+        ->where('tournament_id', $tournamentId)
+        ->where('round', $nextRound)
+        ->orderBy('id')
+        ->get();
+
+    // 5️⃣ Si la siguiente ronda ya tiene jugadores, devolverla
+    $hasPlayers = $nextRoundMatches->contains(fn ($m) =>
+        $m->player1_id !== null || $m->player2_id !== null
+    );
+
+    if ($hasPlayers) {
+        return [
+            'tournament' => $tournament->name,
+            'next_round' => [
+                'round' => $nextRound,
+                'matches' => $nextRoundMatches
+            ]
+        ];
+    }
+
+    // 6️⃣ Rellenar la siguiente ronda con ganadores
+    $index = 0;
+
+    foreach ($nextRoundMatches as $match) {
+
+        if (!isset($winners[$index])) break;
+
+        DB::table('matches')
+            ->where('id', $match->id)
+            ->update([
+                'player1_id' => $winners[$index],
+                'player2_id' => $winners[$index + 1] ?? null,
+                'status' => 0,
+                'updated_at' => now(),
+            ]);
+
+        $index += 2;
+    }
+
+    // 7️⃣ Devolver ronda ya generada
+    $updated = DB::table('matches')
+        ->where('tournament_id', $tournamentId)
+        ->where('round', $nextRound)
+        ->orderBy('id')
+        ->get();
+
+    return [
+        'tournament' => $tournament->name,
+        'next_round' => [
+            'round' => $nextRound,
+            'matches' => $updated
+        ]
+    ];
+}
+
+
+
+    /**
+     * Helper para obtener el teamName o el nombre completo del deportista
+     */
+    private function getTeamNameByParticipantId($participantId)
+    {
+        if (!$participantId)
+            return null;
+
+        $participant = DB::table('tournament_participants')->where('id', $participantId)->first();
+
+        return $participant;
+        if (!$participant)
+            return null;
+
+        if ($participant->teamName)
+            return $participant->teamName;
+
+        $sportsman = DB::table('sportsman')->where('id', $participant->sportsman_id)->first();
+        return $sportsman ? $sportsman->name . ' ' . $sportsman->surname : null;
     }
 }
