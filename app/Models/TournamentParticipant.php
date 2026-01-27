@@ -11,7 +11,8 @@ class TournamentParticipant extends Model
     protected $fillable = [
         'tournament_id',
         'sportsman_id',
-        'partner_id'
+        'partner_id',
+        'teamName'
     ];
 
     /* ======================
