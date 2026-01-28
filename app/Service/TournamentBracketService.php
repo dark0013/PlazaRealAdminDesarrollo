@@ -45,13 +45,13 @@ class TournamentBracketService
 
         // Creamos los matches iniciales usando id de tournament_participants
         for ($i = 0; $i < $participants->count(); $i += 2) {
-            TournamentMatchs::create([
-                'tournament_id' => $tournament->id,
-                'round' => $round,
-                'player1_id' => $participants[$i]->id,  // <--- id de tournament_participants
-                'player2_id' => $participants[$i + 1]->id ?? null,  // <--- id de tournament_participants
-                'status' => 0
-            ]);
+           TournamentMatchs::create([
+    'tournament_id' => $tournament->id,
+    'round' => $round,
+    'player1_id' => $participants[$i]->sportsman_id,
+    'player2_id' => $participants[$i + 1]->sportsman_id ?? null,
+    'status' => 0
+]);
         }
 
         // Generar placeholders para rondas futuras
