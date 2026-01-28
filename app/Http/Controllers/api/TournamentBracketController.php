@@ -91,4 +91,22 @@ class TournamentBracketController extends Controller
 
         return response()->json($data);
     }
+
+    public function updateResult(Request $request, $tournamentId, $matchId)
+{
+    $result = $this->bracketService->setMatchResult(
+        $tournamentId,
+        $matchId,
+        $request->winner_id,
+        $request->loser_id,
+        $request->id_round,
+    );
+
+    if (isset($result['error'])) {
+        return ResponseHelper::error($result['error'], 400);
+    }
+
+    return ResponseHelper::success($result, 'Match actualizado');
+}
+
 }

@@ -136,6 +136,7 @@ Route::prefix('ramas')->group(function () {
     Route::post('matches/{id}/record', [TournamentBracketController::class, 'recordMatchResult']);
 
     Route::get('tournaments/{id}/next-round-versus', [TournamentBracketController::class, 'nextRoundVersus']);
+    Route::put('/tournaments/{tournamentId}/matches/{matchId}/result', [TournamentBracketController::class, 'updateResult']);
 });
 
 Route::get('/navigation', [NavigationController::class, 'index']);

@@ -13,6 +13,7 @@ class TournamentMatchs extends Model
     protected $table = 'matches';
 
      protected $fillable = [
+        'id',
         'tournament_id',
         'player1_id',
         'player2_id',
