@@ -45,13 +45,13 @@ class TournamentBracketService
 
         // Creamos los matches iniciales usando id de tournament_participants
         for ($i = 0; $i < $participants->count(); $i += 2) {
-           TournamentMatchs::create([
-    'tournament_id' => $tournament->id,
-    'round' => $round,
-    'player1_id' => $participants[$i]->sportsman_id,
-    'player2_id' => $participants[$i + 1]->sportsman_id ?? null,
-    'status' => 0
-]);
+            TournamentMatchs::create([
+                'tournament_id' => $tournament->id,
+                'round' => $round,
+                'player1_id' => $participants[$i]->sportsman_id,
+                'player2_id' => $participants[$i + 1]->sportsman_id ?? null,
+                'status' => 0
+            ]);
         }
 
         // Generar placeholders para rondas futuras
@@ -140,22 +140,22 @@ class TournamentBracketService
         $matches = DB::table('matches as m')
             ->leftJoin('tournament_participants as p1', function ($join) use ($tournamentId) {
                 $join
-                    ->on('m.player1_id', '=', 'p1.id')  // <-- Ahora usamos el ID de tournament_participants
+                    ->on('m.player1_id', '=', 'p1.sportsman_id')  // ✅ AQUÍ
                     ->where('p1.tournament_id', $tournamentId);
             })
             ->leftJoin('tournament_participants as p2', function ($join) use ($tournamentId) {
                 $join
-                    ->on('m.player2_id', '=', 'p2.id')  // <-- Igual aquí
+                    ->on('m.player2_id', '=', 'p2.sportsman_id')  // ✅ AQUÍ
                     ->where('p2.tournament_id', $tournamentId);
             })
             ->leftJoin('tournament_participants as w', function ($join) use ($tournamentId) {
                 $join
-                    ->on('m.winner_id', '=', 'w.id')  // <-- winner_id también apunta a tournament_participants.id
+                    ->on('m.winner_id', '=', 'w.sportsman_id')  // ✅
                     ->where('w.tournament_id', $tournamentId);
             })
             ->leftJoin('tournament_participants as l', function ($join) use ($tournamentId) {
                 $join
-                    ->on('m.loser_id', '=', 'l.id')  // <-- loser_id igual
+                    ->on('m.loser_id', '=', 'l.sportsman_id')  // ✅
                     ->where('l.tournament_id', $tournamentId);
             })
             ->select(
@@ -362,7 +362,7 @@ class TournamentBracketService
      * Helper para obtener el teamName o el nombre completo del deportista
      */
     private function getTeamNameByParticipantId($participantId)
-    {    
+    {
         if (!$participantId) {
             return null;
         }
