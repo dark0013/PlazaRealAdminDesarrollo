@@ -8,8 +8,6 @@ use Illuminate\Support\Facades\DB;
 
 class TournamentBracketService
 {
- 
-
     /**
      * Genera todos los matches iniciales y placeholders según el torneo
      *
@@ -374,40 +372,37 @@ class TournamentBracketService
             ->value('teamName');
     }
 
-public function setMatchResult(
-    int $tournamentId,
-    int $matchId,   // ronda
-    int $winnerId,
-    int $loserId,
-    int $id_round   // id real del match
-)
-{
-    // Validación básica: ganador y perdedor no pueden ser iguales
-    if ($winnerId === $loserId) {
-        return ['error' => 'El ganador y el perdedor no pueden ser el mismo'];
+    public function setMatchResult(
+        int $tournamentId,
+        int $matchId,  // ronda
+        int $winnerId,
+        int $loserId,
+        int $id_round  // id real del match
+    ) {
+        // Validación básica: ganador y perdedor no pueden ser iguales
+        if ($winnerId === $loserId) {
+            return ['error' => 'El ganador y el perdedor no pueden ser el mismo'];
+        }
+
+        // Update directo
+        $updated = TournamentMatchs::where('tournament_id', $tournamentId)
+            ->where('id', $id_round)
+            ->where('round', $matchId)
+            ->update([
+                'winner_id' => $winnerId,
+                'loser_id' => $loserId
+            ]);
+
+        if ($updated === 0) {
+            return ['error' => 'Match no encontrado'];
+        }
+
+        // Traer el match actualizado para devolverlo
+        $match = TournamentMatchs::find($id_round);
+
+        return [
+            'message' => 'Resultado actualizado correctamente',
+            'match' => $match
+        ];
     }
-
-    // Update directo
-    $updated = TournamentMatchs::where('tournament_id', $tournamentId)
-        ->where('id', $id_round)
-        ->where('round', $matchId)
-        ->update([
-            'winner_id' => $winnerId,
-            'loser_id'  => $loserId
-        ]);
-
-    if ($updated === 0) {
-        return ['error' => 'Match no encontrado'];
-    }
-
-    // Traer el match actualizado para devolverlo
-    $match = TournamentMatchs::find($id_round);
-
-    return [
-        'message' => 'Resultado actualizado correctamente',
-        'match' => $match
-    ];
-}
-
-
 }

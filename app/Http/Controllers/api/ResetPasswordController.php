@@ -10,7 +10,49 @@ use Illuminate\Support\Facades\Hash;
 
 class ResetPasswordController extends Controller
 {
+    
+    protected $authService;
+
+    public function __construct(AuthService $authService)
+    {
+        $this->authService = $authService;
+    }
+
+      public function forgotPassword(Request $request)
+    {
+        $request->validate(['email' => 'required|email']);
+
+        $this->authService->sendResetPasswordEmail($request->email);
+
+        return response()->json([
+            'message' => 'Si el correo existe, se enviará un enlace de recuperación'
+        ]);
+    }
+
+    // POST /reset-password
     public function resetPassword(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email',
+            'token' => 'required',
+            'password' => 'required|confirmed|min:8'
+        ]);
+
+        try {
+            $this->authService->resetPassword(
+                $request->email,
+                $request->token,
+                $request->password
+            );
+
+            return response()->json(['message' => 'Contraseña actualizada correctamente']);
+        } catch (\Exception $e) {
+            return response()->json(['message' => $e->getMessage()], 400);
+        }
+    }
+
+
+  /*   public function resetPassword(Request $request)
     {
 
       //  return "hola";
@@ -48,5 +90,8 @@ class ResetPasswordController extends Controller
         return response()->json([
             'message' => 'Contraseña actualizada correctamente'
         ]);
-    }
+    } */
+
+
+
 }

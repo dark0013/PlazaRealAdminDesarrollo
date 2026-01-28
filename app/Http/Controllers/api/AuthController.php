@@ -29,4 +29,17 @@ class AuthController extends Controller
 
         return response()->json($result);
     }
+
+     public function forgotPassword(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email'
+        ]);
+
+        $this->authService->sendResetPasswordEmail($request->email);
+
+        return response()->json([
+            'message' => 'Si el correo existe, se enviará un enlace de recuperación'
+        ]);
+    }
 }
