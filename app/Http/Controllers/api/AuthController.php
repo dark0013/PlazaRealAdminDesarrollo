@@ -36,10 +36,14 @@ class AuthController extends Controller
             'email' => 'required|email'
         ]);
 
-        $this->authService->sendResetPasswordEmail($request->email);
+        $this->authService->sendChangePasswordEmail($request->email);
 
         return response()->json([
             'message' => 'Si el correo existe, se enviará un enlace de recuperación'
         ]);
     }
+
+
+
+
 }

@@ -94,12 +94,15 @@ class TournamentBracketController extends Controller
 
     public function updateResult(Request $request, $tournamentId, $matchId)
 {
+  //  return $request->all();
     $result = $this->bracketService->setMatchResult(
         $tournamentId,
         $matchId,
         $request->winner_id,
         $request->loser_id,
         $request->id_round,
+        $request->punto_player1,
+        $request->punto_player2
     );
 
     if (isset($result['error'])) {

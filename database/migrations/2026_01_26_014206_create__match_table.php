@@ -19,6 +19,8 @@ return new class extends Migration {
             $table->unsignedBigInteger('winner_id')->nullable();
             $table->unsignedBigInteger('loser_id')->nullable();
             $table->integer('round'); 
+            $table->integer('punto_player1')->default(0);
+            $table->integer('punto_player2')->default(0);
             $table->integer('status')->default(0); // 0: pendiente, 1: completado
             $table->timestamps();
 

@@ -388,7 +388,9 @@ class TournamentBracketService
         int $matchId,  // ronda
         int $winnerId,
         int $loserId,
-        int $id_round  // id real del match
+        int $id_round,
+        int $punto_player1,
+        int $punto_player2
     ) {
         // Validación básica: ganador y perdedor no pueden ser iguales
         if ($winnerId === $loserId) {
@@ -401,7 +403,9 @@ class TournamentBracketService
             ->where('round', $matchId)
             ->update([
                 'winner_id' => $winnerId,
-                'loser_id' => $loserId
+                'loser_id' => $loserId,
+                'punto_player1' => $punto_player1,
+                'punto_player2' => $punto_player2
             ]);
 
         if ($updated === 0) {

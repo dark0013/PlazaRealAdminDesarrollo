@@ -5,11 +5,10 @@ namespace App\Service;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\ValidationException;
-
-use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
+use Illuminate\Validation\ValidationException;
 
 class AuthService
 {
@@ -64,41 +63,41 @@ class AuthService
         ];
     }
 
- /*    public function sendResetPasswordEmail(string $email)
-    {
-        $user = User::where('email', $email)->first();
+    /*    public function sendResetPasswordEmail(string $email)
+       {
+           $user = User::where('email', $email)->first();
 
-        if (!$user) {
-            return false;  // Por seguridad, no decimos si no existe
-        }
+           if (!$user) {
+               return false;  // Por seguridad, no decimos si no existe
+           }
 
-        // Generar token en texto plano
-        $token = Str::random(64);
+           // Generar token en texto plano
+           $token = Str::random(64);
 
-        // Guardar token hasheado en DB
-        DB::table('password_reset_tokens')->updateOrInsert(
-            ['email' => $email],
-            [
-                'token' => Hash::make($token),
-                'created_at' => now()
-            ]
-        );
+           // Guardar token hasheado en DB
+           DB::table('password_reset_tokens')->updateOrInsert(
+               ['email' => $email],
+               [
+                   'token' => Hash::make($token),
+                   'created_at' => now()
+               ]
+           );
 
-        // Crear link de reset
-        $resetLink = url('/reset-password?token=' . $token . '&email=' . $email);
+           // Crear link de reset
+           $resetLink = url('/reset-password?token=' . $token . '&email=' . $email);
 
-        // Enviar correo
-        Mail::raw(
-            "Hola {$user->name},\n\nHaz clic en el siguiente enlace para restablecer tu contraseña:\n\n$resetLink\n\nEste enlace expira en 60 minutos.",
-            function ($message) use ($email) {
-                $message
-                    ->to($email)
-                    ->subject('Recuperación de contraseña');
-            }
-        );
+           // Enviar correo
+           Mail::raw(
+               "Hola {$user->name},\n\nHaz clic en el siguiente enlace para restablecer tu contraseña:\n\n$resetLink\n\nEste enlace expira en 60 minutos.",
+               function ($message) use ($email) {
+                   $message
+                       ->to($email)
+                       ->subject('Recuperación de contraseña');
+               }
+           );
 
-        return true;
-    } */
+           return true;
+       } */
 
     public function resetPassword(string $email, string $token, string $password)
     {
@@ -123,9 +122,8 @@ class AuthService
         return true;
     }
 
-
-    ////olvide contrasena
-     public function sendResetPasswordEmail(string $email)
+    // //olvide contrasena
+    public function sendResetPasswordEmail(string $email)
     {
         // Buscar usuario
         $user = User::where('email', $email)->first();
@@ -154,8 +152,32 @@ class AuthService
         Mail::raw(
             "Hola {$user->name},\n\nHaz clic en el siguiente enlace para restablecer tu contraseña:\n\n$resetLink\n\nEste enlace expira en 60 minutos.",
             function ($message) use ($email) {
-                $message->to($email)
-                        ->subject('Recuperación de contraseña');
+                $message
+                    ->to($email)
+                    ->subject('Recuperación de contraseña');
+            }
+        );
+
+        return true;
+    }
+
+    public function sendChangePasswordEmail(string $email)
+    {
+        // Buscar usuario
+        $user = User::where('email', $email)->first();
+
+        // Por seguridad, no decimos si no existe
+        if (!$user) {
+            return false;
+        }
+
+        // Enviar correo
+        Mail::raw(
+            "Hola {$user->name},\n\nSu contraseña temporal es: <b>{$user->password}</b>.",
+            function ($message) use ($email) {
+                $message
+                    ->to($email)
+                    ->subject('Cambio de contraseña');
             }
         );
 

@@ -2,24 +2,25 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory; // ✅ importar el trait
+use Illuminate\Database\Eloquent\Factories\HasFactory;  // ✅ importar el trait
 use Illuminate\Database\Eloquent\Model;
-
 
 class TournamentMatchs extends Model
 {
-       use HasFactory;
+    use HasFactory;
 
     protected $table = 'matches';
 
-     protected $fillable = [
+    protected $fillable = [
         'id',
         'tournament_id',
         'player1_id',
         'player2_id',
         'winner_id',
         'loser_id',
-        'round'
+        'round',
+        'punto_player1',
+        'punto_player2'
     ];
 
     public function tournament()
