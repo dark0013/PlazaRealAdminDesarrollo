@@ -161,7 +161,9 @@ class TournamentBracketService
             ->select(
                 'm.id as match_id',
                 'm.round',
+                'p1.sportsman_id as id_player1',
                 'p1.teamName as player1_team',
+                'p2.sportsman_id as id_player2',
                 'p2.teamName as player2_team',
                 'w.teamName as winner_team',
                 'l.teamName as loser_team',
@@ -350,7 +352,9 @@ class TournamentBracketService
             return [
                 'match_id' => $m->id,
                 'round' => $m->round,
+                'id_player1' => $m->player1_id,
                 'player1' => $this->getTeamNameByParticipantId($m->player1_id),
+                'id_player2' => $m->player2_id,
                 'player2' => $this->getTeamNameByParticipantId($m->player2_id),
                 'winner' => $this->getTeamNameByParticipantId($m->winner_id),
                 'status' => $m->status,
