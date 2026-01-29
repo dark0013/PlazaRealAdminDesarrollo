@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Service\AuthService;
+use Illuminate\Http\Request;
 
 class AuthController extends Controller
 {
@@ -24,13 +24,13 @@ class AuthController extends Controller
 
     public function logout(Request $request)
     {
-        $user = $request->user(); // Obtener usuario autenticado
+        $user = $request->user();  // Obtener usuario autenticado
         $result = $this->authService->logout($user);
 
         return response()->json($result);
     }
 
-     public function forgotPassword(Request $request)
+    public function forgotPassword(Request $request)
     {
         $request->validate([
             'email' => 'required|email'
@@ -43,7 +43,23 @@ class AuthController extends Controller
         ]);
     }
 
+    public function sendPasswordTemporalEmail(Request $request)
+    {
+        /* $request->validate([
+            'email' => 'required|email'
+        ]); */
 
 
+       $pass =  $this->authService->sendChangePasswordEmail(
+            $request->usuario_id,
+            $request->email,
+            $request->password,
+            $request->new_password
+        );
+       
 
+        return response()->json([
+            'message' => $pass
+        ]);
+    }
 }

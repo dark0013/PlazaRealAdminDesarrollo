@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Hash;
 class ResetPasswordController extends Controller
 {
     
-    protected $authService;
+    /* protected $authService;
 
     public function __construct(AuthService $authService)
     {
@@ -49,7 +49,7 @@ class ResetPasswordController extends Controller
         } catch (\Exception $e) {
             return response()->json(['message' => $e->getMessage()], 400);
         }
-    }
+    } */
 
 
   /*   public function resetPassword(Request $request)

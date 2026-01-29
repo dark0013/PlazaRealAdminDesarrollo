@@ -161,19 +161,35 @@ class AuthService
         return true;
     }
 
-    public function sendChangePasswordEmail(string $email)
+    public function sendChangePasswordEmail($usuario_id,
+        $email,
+        $password,
+        $new_password)
     {
+
+    
         // Buscar usuario
-        $user = User::where('email', $email)->first();
+        $email = strtolower(trim($email));
+
+        $user = User::where('id', $usuario_id)
+            ->whereRaw('LOWER(email) = ?', [$email])
+            ->first();
+
+        
+
 
         // Por seguridad, no decimos si no existe
         if (!$user) {
             return false;
         }
 
+        // Actualizar password (SIEMPRE hasheado)
+        $user->password = Hash::make($new_password);
+        $user->save();
+
         // Enviar correo
         Mail::raw(
-            "Hola {$user->name},\n\nSu contraseña temporal es: <b>{$user->password}</b>.",
+            "Hola {$user->name},\n\nTu contraseña ha sido cambiada exitosamente.",
             function ($message) use ($email) {
                 $message
                     ->to($email)
@@ -181,6 +197,6 @@ class AuthService
             }
         );
 
-        return true;
+        return $user;
     }
 }

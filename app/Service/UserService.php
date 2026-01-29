@@ -4,9 +4,12 @@ namespace App\Service;
 
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
-
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
+use Illuminate\Validation\ValidationException;
 
 class UserService
 {
@@ -69,9 +72,9 @@ class UserService
         if ($validator->fails()) {
             return ['errors' => $validator->errors()];
         }
-              
-        $user = User::create($data);
 
+        $user = User::create($data);
+        $this->sendChangePasswordEmail( $user,$data['password']);
         return $user ?: ['errors' => 'User creation failed'];
     }
 
@@ -83,7 +86,7 @@ class UserService
             'secondary_surname' => 'required|string|max:255',
             'identification_number' => 'required|',
             'email' => 'required|string|email|max:255,email',
-            //'password' => 'min:8',
+            // 'password' => 'min:8',
             'telephone' => 'nullable|string|max:20',
             'role' => 'required|integer'
         ], [
@@ -114,7 +117,7 @@ class UserService
         $user = User::findOrFail($id);
 
         unset($data['password']);
-        
+
         $user->update($data);
 
         return $user;
@@ -130,5 +133,28 @@ class UserService
         $user->save();
 
         return $user;
+    }
+
+    public function sendChangePasswordEmail( $data,$pass)
+    {
+        // Buscar usuario
+        $user = User::where('email', $data['email'])->first();
+
+        // Por seguridad, no decimos si no existe
+        if (!$user) {
+            return false;
+        }
+
+        // Enviar correo
+        Mail::raw(
+            "Hola {$user->name},\n\nSu contraseña temporal es: {$pass}.",
+            function ($message) use ($data) {
+                $message
+                    ->to($data['email'])
+                    ->subject('Cambio de contraseña');
+            }
+        );
+
+        return true;
     }
 }
