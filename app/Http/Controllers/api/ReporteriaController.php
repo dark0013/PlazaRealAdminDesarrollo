@@ -37,4 +37,20 @@ class ReporteriaController extends Controller
             'data' => $reservations
         ]);
     }
+
+        public function getReporteCuadroResultados(Request $request)
+    {
+        $request->validate([
+            'tournament_id' => 'required|exists:tournaments,id'
+        ]);
+        
+        $data = $this->reporteriaService->getCuadroResultadosByTournament(
+            $request->tournament_id
+        );
+
+        return response()->json([
+            'success' => true,
+            'data'    => $data
+        ]);
+    }
 }

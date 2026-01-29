@@ -143,6 +143,7 @@ Route::prefix('ramas')->group(function () {
 
 Route::prefix('reporteria')->group(function () {
     Route::Post('/reporte-reservacion', [ReporteriaController::class, 'getReporteReservacion']);
+    Route::Post('/reporte-cuadro-resultados', [ReporteriaController::class, 'getReporteCuadroResultados']);
 });
 
 
