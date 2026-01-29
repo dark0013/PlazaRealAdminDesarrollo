@@ -183,8 +183,9 @@ class AuthService
             return false;
         }
 
-        // Actualizar password (SIEMPRE hasheado)
+        // Actualizar password (SIEMPRE hasheado) e is_temporal
         $user->password = Hash::make($new_password);
+        $user->is_temporal = false;
         $user->save();
 
         // Enviar correo
