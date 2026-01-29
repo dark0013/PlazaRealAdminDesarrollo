@@ -12,6 +12,7 @@ use App\Http\Controllers\Api\RoleController;
 use App\Http\Controllers\Api\TournamentBracketController;
 use App\Http\Controllers\Api\TournamentController;
 use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\Api\ReporteriaController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('users')->group(function () {
@@ -138,6 +139,12 @@ Route::prefix('ramas')->group(function () {
     Route::get('tournaments/{id}/next-round-versus', [TournamentBracketController::class, 'nextRoundVersus']);
     Route::put('/tournaments/{tournamentId}/matches/{matchId}/result', [TournamentBracketController::class, 'updateResult']);
 });
+
+
+Route::prefix('reporteria')->group(function () {
+    Route::Post('/reporte-reservacion', [ReporteriaController::class, 'getReporteReservacion']);
+});
+
 
 Route::get('/navigation', [NavigationController::class, 'index']);
 
