@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Service\ReporteriaService;
+use App\Helpers\ResponseHelper;
 use App\Http\Controllers\Controller;
+use App\Service\ReporteriaService;
 use Illuminate\Http\Request;
 
 class ReporteriaController extends Controller
@@ -17,7 +18,6 @@ class ReporteriaController extends Controller
 
     public function getReporteReservacion(Request $request)
     {
-       
         // ✅ Validación
         $request->validate([
             'scenario_id' => 'required|exists:scenario,id',
@@ -32,25 +32,34 @@ class ReporteriaController extends Controller
             $request->end_date
         );
 
-        return response()->json([
-            'success' => true,
-            'data' => $reservations
-        ]);
+        if (isset($reservations['errors'])) {
+            return ResponseHelper::error($reservations['errors'], 400);
+        }
+        return ResponseHelper::success($reservations);
     }
 
-        public function getReporteCuadroResultados(Request $request)
+    public function getReporteCuadroResultados(Request $request)
     {
-        $request->validate([
-            'tournament_id' => 'required|exists:tournaments,id'
-        ]);
-        
-        $data = $this->reporteriaService->getCuadroResultadosByTournament(
+        $result = $this->reporteriaService->getCuadroResultadosByTournament(
             $request->tournament_id
         );
 
-        return response()->json([
-            'success' => true,
-            'data'    => $data
-        ]);
+        if (isset($result['errors'])) {
+            return ResponseHelper::error($result['errors'], 400);
+        }
+        return ResponseHelper::success($result);
+    }
+
+    public function getReporteClasificacionDeportistas(Request $request)
+    {
+        $category = $request->category;
+        $gender = $request->gender;
+
+        $result = $this->reporteriaService->getClasificacionDeportistas($category, $gender);
+
+        if (isset($result['errors'])) {
+            return ResponseHelper::error($result['errors'], 400);
+        }
+        return ResponseHelper::success($result);
     }
 }
