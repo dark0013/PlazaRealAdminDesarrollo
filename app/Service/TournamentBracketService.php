@@ -189,8 +189,15 @@ class TournamentBracketService
         return $bracket;
     }
 
-    public function confirmMatches(int $tournamentId): int
+    public function confirmMatches(int $tournamentId)
     {
+        $alreadyConfirmed = TournamentMatchs::where('tournament_id', $tournamentId)
+            ->where('status', 1)
+            ->exists();
+
+        if ($alreadyConfirmed) {
+               return ['errors' => 'Este torneo ya fue confirmado.'];
+        }
         // Actualiza todos los matches de este torneo
         $updated = TournamentMatchs::where('tournament_id', $tournamentId)
             ->update(['status' => 1]);
