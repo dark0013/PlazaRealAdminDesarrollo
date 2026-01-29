@@ -163,8 +163,10 @@ class TournamentBracketService
                 'm.round',
                 'p1.sportsman_id as id_player1',
                 'p1.teamName as player1_team',
+                'm.punto_player1',
                 'p2.sportsman_id as id_player2',
                 'p2.teamName as player2_team',
+                'm.punto_player2',
                 'w.teamName as winner_team',
                 'l.teamName as loser_team',
                 'm.status'
