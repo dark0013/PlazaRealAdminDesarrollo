@@ -154,7 +154,7 @@ Route::post('/enviar-correo', [MailController::class, 'enviar']);
 /* Route::post('/resetPassword', [ResetPasswordController::class, 'resetPassword']);
 Route::post('/forgot-password', [AuthController::class, 'forgotPassword']); */
 
-Route::post('/forgot-password', [AuthController::class, 'forgotPassword']);
+Route::post('/forgot-password', [AuthController::class, 'newForgetPassword']);
 Route::post('/change-password', [AuthController::class, 'sendPasswordTemporalEmail']);
 
 Route::post('/login', [AuthController::class, 'login']);

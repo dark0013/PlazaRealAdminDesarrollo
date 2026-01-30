@@ -166,17 +166,12 @@ class AuthService
         $password,
         $new_password)
     {
-
-    
         // Buscar usuario
         $email = strtolower(trim($email));
 
         $user = User::where('id', $usuario_id)
             ->whereRaw('LOWER(email) = ?', [$email])
             ->first();
-
-        
-
 
         // Por seguridad, no decimos si no existe
         if (!$user) {
@@ -195,6 +190,38 @@ class AuthService
                 $message
                     ->to($email)
                     ->subject('Cambio de contraseña');
+            }
+        );
+
+        return $user;
+    }
+
+    public function newForgetPassword(int $usuario_id, string $password)
+    {
+        $user = User::where('id', $usuario_id)
+            ->first();
+
+        // Por seguridad, no decimos si no existe
+        if (!$user) {
+            return false;
+        }
+ 
+        // Generar contraseña temporal
+        $tempPassword = Str::random(10);
+
+        // Actualizar password (SIEMPRE hasheado) e is_temporal
+        $user->password = Hash::make($tempPassword);
+        $user->is_temporal = true;
+        $user->save();
+
+        $email = $user->email;
+        // Enviar correo
+        Mail::raw(
+            "Hola {$user->name},\n\nTu contraseña temporal es: $tempPassword\nPor favor, cámbiala en tu próximo inicio de sesión.",
+            function ($message) use ($email) {
+                $message
+                    ->to($email)
+                    ->subject('Contraseña temporal');
             }
         );
 
