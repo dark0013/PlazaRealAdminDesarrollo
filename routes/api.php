@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\CatalogController;
 use App\Http\Controllers\Api\MailController;
 use App\Http\Controllers\Api\NavigationController;
 use App\Http\Controllers\Api\PermissionController;
+use App\Http\Controllers\Api\ReporteriaController;
 use App\Http\Controllers\Api\ReservationController;
 use App\Http\Controllers\Api\ReservationsController;
 use App\Http\Controllers\Api\ResetPasswordController;
@@ -12,7 +13,6 @@ use App\Http\Controllers\Api\RoleController;
 use App\Http\Controllers\Api\TournamentBracketController;
 use App\Http\Controllers\Api\TournamentController;
 use App\Http\Controllers\Api\UserController;
-use App\Http\Controllers\Api\ReporteriaController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('users')->group(function () {
@@ -140,13 +140,11 @@ Route::prefix('ramas')->group(function () {
     Route::put('/tournaments/{tournamentId}/matches/{matchId}/result', [TournamentBracketController::class, 'updateResult']);
 });
 
-
 Route::prefix('reporteria')->group(function () {
     Route::Post('/reporte-reservacion', [ReporteriaController::class, 'getReporteReservacion']);
     Route::Post('/reporte-cuadro-resultados', [ReporteriaController::class, 'getReporteCuadroResultados']);
     Route::Post('/reporte-clasificacion-deportistas', [ReporteriaController::class, 'getReporteClasificacionDeportistas']);
 });
-
 
 Route::get('/navigation', [NavigationController::class, 'index']);
 
@@ -155,6 +153,7 @@ Route::post('/enviar-correo', [MailController::class, 'enviar']);
 Route::post('/forgot-password', [AuthController::class, 'forgotPassword']); */
 
 Route::post('/forgot-password', [AuthController::class, 'newForgetPassword']);
+Route::post('/olvide-contrasena', [AuthController::class, 'newForgetPasswordS']);
 Route::post('/change-password', [AuthController::class, 'sendPasswordTemporalEmail']);
 
 Route::post('/login', [AuthController::class, 'login']);

@@ -77,4 +77,20 @@ class AuthController extends Controller
             'message' => $pass
         ]);
     }
+
+
+
+
+    public function newForgetPasswordS(Request $request)
+    {
+        /* $request->validate([
+            'email' => 'required|email'
+        ]); */  
+         $pass =  $this->authService->newForgetPasswordS(
+                $request->email
+          );
+        return response()->json([
+            'message' => $pass
+        ]);
+    }
 }

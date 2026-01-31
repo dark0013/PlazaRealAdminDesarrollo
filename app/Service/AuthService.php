@@ -227,4 +227,36 @@ class AuthService
 
         return $user;
     }
+
+    public function newForgetPasswordS( string $email)
+    {
+        $user = User::where('email', $email)
+            ->first();
+
+        // Por seguridad, no decimos si no existe
+        if (!$user) {
+            return false;
+        }
+ 
+        // Generar contraseña temporal
+        $tempPassword = Str::random(10);
+
+        // Actualizar password (SIEMPRE hasheado) e is_temporal
+        $user->password = Hash::make($tempPassword);
+        $user->is_temporal = true;
+        $user->save();
+
+      //  $email = $user->email;
+        // Enviar correo
+        Mail::raw(
+            "Hola {$user->name},\n\nTu contraseña temporal es: $tempPassword\nPor favor, cámbiala en tu próximo inicio de sesión.",
+            function ($message) use ($email) {
+                $message
+                    ->to($email)
+                    ->subject('Contraseña temporal');
+            }
+        );
+
+        return $user;
+    }
 }
