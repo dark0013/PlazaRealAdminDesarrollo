@@ -30,17 +30,18 @@ class ReporteriaService
                     ELSE r.start_time
                 END as reservation_time
             "),
-                DB::raw("CONCAT(sp.name, ' ', sp.surname) as sportsman_name")
+                DB::raw("CONCAT(sp.name, ' ', sp.surname) as sportsman_name"),
+                'r.availability'
             )
             ->orderBy('r.reservation_date')
             ->orderBy('r.start_time')
             ->get();
 
-          if (!$reservaciones || $reservaciones->isEmpty()) {
+        if (!$reservaciones || $reservaciones->isEmpty()) {
             return ['errors' => 'No hay datos de reservaciones'];
         }
 
-        return $reservaciones ?: ['errors' => 'No se pudo obtener las reservaciones'];   
+        return $reservaciones ?: ['errors' => 'No se pudo obtener las reservaciones'];
     }
 
     public function getCuadroResultadosByTournament(int $tournamentId)
@@ -105,8 +106,69 @@ class ReporteriaService
         return $dataResult ?: ['errors' => 'No se pudo obtener el cuadro de resultados'];
     }
 
-    public function getClasificacionDeportistas($category = null, $gender = null)
-    {
+    /*     public function getClasificacionDeportistas($category = null, $gender = null)
+        {
+            $query = DB::table('sportsman as s')
+                // Partidos como player1
+                ->leftJoin('matches as m1', function ($join) {
+                    $join
+                        ->on('m1.player1_id', '=', 's.id')
+                        ->where('m1.status', 1);
+                })
+                // Partidos como player2
+                ->leftJoin('matches as m2', function ($join) {
+                    $join
+                        ->on('m2.player2_id', '=', 's.id')
+                        ->where('m2.status', 1);
+                })
+                ->leftJoin('tournament_participants as tp', 'tp.sportsman_id', '=', 's.id')
+                ->select(
+                    DB::raw("CONCAT(s.name, ' ', s.surname) as deportista"),
+                    's.category as categoria',
+                    's.gender as genero',
+                    DB::raw('
+                    COALESCE(SUM(m1.punto_player1), 0) +
+                    COALESCE(SUM(m2.punto_player2), 0)
+                    as puntos_totales
+                '),
+                    DB::raw('COUNT(DISTINCT tp.tournament_id) as torneos_participados')
+                )
+                ->groupBy(
+                    's.id',
+                    's.name',
+                    's.surname',
+                    's.category',
+                    's.gender'
+                );
+
+            // 🔥 FILTRO POR CATEGORÍA
+            if ($category) {
+                $query->where('s.category', $category);
+            }
+
+            // 🔥 FILTRO POR GÉNERO
+            if ($gender) {
+                $query->where('s.gender', $gender);
+            }
+
+            $dataSportsmen = $query
+                ->orderByDesc('puntos_totales')
+                ->get();
+
+            if (!$dataSportsmen || $dataSportsmen->isEmpty()) {
+                return ['errors' => 'No hay datos de clasificacion de deportistas'];
+            }
+
+            return $dataSportsmen ?: ['errors' => 'No se pudo obtener las clasificaciones de deportistas'];
+        } */
+
+    public function getClasificacionDeportistas(
+        $category = null,
+        $gender = null,
+        $tournamentId = null,
+        $startDate = null,
+        $endDate = null
+    ) {
         $query = DB::table('sportsman as s')
             // Partidos como player1
             ->leftJoin('matches as m1', function ($join) {
@@ -120,7 +182,10 @@ class ReporteriaService
                     ->on('m2.player2_id', '=', 's.id')
                     ->where('m2.status', 1);
             })
+            // Participantes del torneo
             ->leftJoin('tournament_participants as tp', 'tp.sportsman_id', '=', 's.id')
+            // Torneos
+            ->leftJoin('tournaments as t', 't.id', '=', 'tp.tournament_id')
             ->select(
                 DB::raw("CONCAT(s.name, ' ', s.surname) as deportista"),
                 's.category as categoria',
@@ -140,24 +205,45 @@ class ReporteriaService
                 's.gender'
             );
 
-        // 🔥 FILTRO POR CATEGORÍA
+        /* =========================
+           FILTROS EXISTENTES
+        ========================== */
+
         if ($category) {
             $query->where('s.category', $category);
         }
 
-        // 🔥 FILTRO POR GÉNERO
         if ($gender) {
             $query->where('s.gender', $gender);
+        }
+
+        /* =========================
+           NUEVOS FILTROS
+        ========================== */
+
+        // 🔥 FILTRO POR TORNEO
+        if ($tournamentId) {
+            $query->where('t.id', $tournamentId);
+        }
+
+        // 🔥 FILTRO POR FECHA INICIO
+        if ($startDate) {
+            $query->whereDate('t.start_date', '>=', $startDate);
+        }
+
+        // 🔥 FILTRO POR FECHA FIN
+        if ($endDate) {
+            $query->whereDate('t.end_date', '<=', $endDate);
         }
 
         $dataSportsmen = $query
             ->orderByDesc('puntos_totales')
             ->get();
 
-        if (!$dataSportsmen || $dataSportsmen->isEmpty()) {
+        if ($dataSportsmen->isEmpty()) {
             return ['errors' => 'No hay datos de clasificacion de deportistas'];
         }
 
-        return $dataSportsmen ?: ['errors' => 'No se pudo obtener las clasificaciones de deportistas'];
+        return $dataSportsmen;
     }
 }

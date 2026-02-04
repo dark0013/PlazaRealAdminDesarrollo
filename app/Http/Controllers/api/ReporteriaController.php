@@ -50,12 +50,28 @@ class ReporteriaController extends Controller
         return ResponseHelper::success($result);
     }
 
-    public function getReporteClasificacionDeportistas(Request $request)
+   /*  public function getReporteClasificacionDeportistas(Request $request)
     {
         $category = $request->category;
         $gender = $request->gender;
 
         $result = $this->reporteriaService->getClasificacionDeportistas($category, $gender);
+
+        if (isset($result['errors'])) {
+            return ResponseHelper::error($result['errors'], 400);
+        }
+        return ResponseHelper::success($result);
+    } */
+
+    public function getReporteClasificacionDeportistas(Request $request)
+    {
+        $category = $request->category;
+        $gender = $request->gender;
+        $tournamentId = $request->tournament_id;
+        $startDate = $request->start_date;
+        $endDate = $request->end_date;
+
+        $result = $this->reporteriaService->getClasificacionDeportistas($category, $gender, $tournamentId, $startDate, $endDate);
 
         if (isset($result['errors'])) {
             return ResponseHelper::error($result['errors'], 400);
