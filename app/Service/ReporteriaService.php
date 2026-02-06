@@ -163,87 +163,65 @@ class ReporteriaService
         } */
 
     public function getClasificacionDeportistas(
-        $category = null,
-        $gender = null,
-        $tournamentId = null,
-        $startDate = null,
-        $endDate = null
+        ?string $category = null,
+        ?string $gender = null,
+        int $tournamentId = 0,
+        ?string $startDate = null,
+        ?string $endDate = null
     ) {
         $query = DB::table('sportsman as s')
-            // Partidos como player1
-            ->leftJoin('matches as m1', function ($join) {
-                $join
-                    ->on('m1.player1_id', '=', 's.id')
-                    ->where('m1.status', 1);
+            ->join('matches as m', function ($join) use ($tournamentId, $startDate, $endDate) {
+                $join->on(function ($q) {
+                    $q->on('m.player1_id', '=', 's.id')
+                      ->orOn('m.player2_id', '=', 's.id');
+                })
+                ->where('m.status', 1);
+
+                if ($tournamentId !== 0) {
+                    $join->where('m.tournament_id', $tournamentId);
+                }
+
+                if (!empty($startDate)) {
+                    $join->whereDate('m.created_at', '>=', $startDate);
+                }
+
+                if (!empty($endDate)) {
+                    $join->whereDate('m.created_at', '<=', $endDate);
+                }
             })
-            // Partidos como player2
-            ->leftJoin('matches as m2', function ($join) {
-                $join
-                    ->on('m2.player2_id', '=', 's.id')
-                    ->where('m2.status', 1);
-            })
-            // Participantes del torneo
-            ->leftJoin('tournament_participants as tp', 'tp.sportsman_id', '=', 's.id')
-            // Torneos
-            ->leftJoin('tournaments as t', 't.id', '=', 'tp.tournament_id')
-            ->select(
-                DB::raw("CONCAT(s.name, ' ', s.surname) as deportista"),
-                's.category as categoria',
-                's.gender as genero',
-                DB::raw('
-                COALESCE(SUM(m1.punto_player1), 0) +
-                COALESCE(SUM(m2.punto_player2), 0)
-                as puntos_totales
-            '),
-                DB::raw('COUNT(DISTINCT tp.tournament_id) as torneos_participados')
-            )
+            ->join('tournaments as t', 't.id', '=', 'm.tournament_id');
+
+        if (!empty($category)) {
+            $query->where('s.category', $category);
+        }
+
+        if (!empty($gender)) {
+            $query->where('s.gender', $gender);
+        }
+
+        return $query
+            ->selectRaw("
+                CONCAT(s.name, ' ', s.surname) as deportista,
+                s.category as categoria,
+                s.gender as genero,
+                SUM(
+                    CASE
+                        WHEN m.player1_id = s.id THEN m.punto_player1
+                        WHEN m.player2_id = s.id THEN m.punto_player2
+                        ELSE 0
+                    END
+                ) as puntos_totales,
+                COUNT(DISTINCT m.tournament_id) as torneos_participados
+            ")
             ->groupBy(
                 's.id',
                 's.name',
                 's.surname',
                 's.category',
                 's.gender'
-            );
-
-        /* =========================
-           FILTROS EXISTENTES
-        ========================== */
-
-        if ($category) {
-            $query->where('s.category', $category);
-        }
-
-        if ($gender) {
-            $query->where('s.gender', $gender);
-        }
-
-        /* =========================
-           NUEVOS FILTROS
-        ========================== */
-
-        // 🔥 FILTRO POR TORNEO
-        if ($tournamentId) {
-            $query->where('t.id', $tournamentId);
-        }
-
-        // 🔥 FILTRO POR FECHA INICIO
-        if ($startDate) {
-            $query->whereDate('t.start_date', '>=', $startDate);
-        }
-
-        // 🔥 FILTRO POR FECHA FIN
-        if ($endDate) {
-            $query->whereDate('t.end_date', '<=', $endDate);
-        }
-
-        $dataSportsmen = $query
+            )
             ->orderByDesc('puntos_totales')
             ->get();
-
-        if ($dataSportsmen->isEmpty()) {
-            return ['errors' => 'No hay datos de clasificacion de deportistas'];
-        }
-
-        return $dataSportsmen;
     }
+
 }
