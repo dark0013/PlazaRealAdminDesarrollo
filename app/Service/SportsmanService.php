@@ -2,36 +2,40 @@
 namespace App\Service;
 
 use App\Models\Sportsman;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 
 class SportsmanService
 {
-  public function getAllSportsman()
-{
-    $sportsmen = DB::table('sportsman as s')
-        ->leftJoin('category as c', 'c.id', '=', 's.category')
-        ->select(
-            's.id',
-            's.name',
-            's.surname',
-            's.identification',
-            's.birthdate',
-            's.gender',
-            's.telephone',
-            's.email',
-            's.current_ranking',
-            's.status',
+    public function getAllSportsman()
+    {
+        $sportsmen = DB::table('sportsman as s')
+            ->leftJoin('category as c', 'c.id', '=', 's.category')
+            ->select(
+                's.id',
+                's.name',
+                's.surname',
+                's.identification',
+                's.birthdate',
+                's.gender',
+                's.telephone',
+                's.email',
+                's.current_ranking',
+                's.status',
+                // datos de categoría
+                'c.id as category_id',
+                'c.name as category_name',
+                'c.description as category_description'
+            )
+            ->get();
 
-            // datos de categoría
-            'c.id as category_id',
-            'c.name as category_name',
-            'c.description as category_description'
-        )
-        ->get();
+        $sportsmen->transform(function ($item) {
+            $item->status = (bool) $item->status;
+            return $item;
+        });
 
-    return $sportsmen->isEmpty() ? null : $sportsmen;
-}
+        return $sportsmen->isEmpty() ? null : $sportsmen;
+    }
 
     public function getSportsmanById(int $id)
     {

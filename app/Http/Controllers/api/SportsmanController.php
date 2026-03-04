@@ -59,7 +59,7 @@ class SportsmanController extends Controller
 
     public function deactivateSportsman($id)
     {
-        $result = $this->sportsmanService->changeStatusSportsman($id, 'inactive');
+        $result = $this->sportsmanService->changeStatusSportsman($id, false);
         if (isset($result['errors'])) {
             return ResponseHelper::error($result['errors'], 400);
         }
@@ -69,7 +69,7 @@ class SportsmanController extends Controller
 
     public function activateSportsman($id)
     {
-        $result = $this->sportsmanService->changeStatusSportsman($id, 'active');
+        $result = $this->sportsmanService->changeStatusSportsman($id, true);
         if (isset($result['errors'])) {
             return ResponseHelper::error($result['errors'], 400);
         }
